@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>문화프레임빅데이터연구소</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.1/web-animations.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="/resource/security.js" type="text/javascript"></script>
+    <script id="prescript" type="text/javascript">
+        $(window).on('load', function () {
+            var agent = navigator
+                .userAgent
+                .toLowerCase();
+
+            // 인터넷익스플로러 배제 포함시키는게 사실상 새로 짜는것과 같음
+            if ((navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent
+                    .indexOf("msie") != -1)) {
+                $('#modalcontext').empty();
+                $('#cancel').hide();
+                $('#submit').hide();
+                $('#modaltext').text("Information");
+                $('#modalcontext').append(
+                    "<p style='width:100%; font-size:16px;' align='center'><b>Sorry,<br>Support for" +
+                    " this browser has ended.</b></p>"
+                );
+                $('#modalcontext').append(
+                    "<p style='width:100%; font-size:13px;' align='center'>This page is optimized f" +
+                    "or Chrome browser.</p>"
+                );
+                $('#modalcontext').append(
+                    "<p align='center'><a style='width:100%;' target='_blank' href='https://www.goo" +
+                    "gle.com/intl/en/chrome/'>Install Google Chrome Browser</a></p>"
+                );
+
+                $('#myModal').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+
+            } else {
+                let unique = Math.floor(new Date().getTime() / 1000);
+                $('head').append(
+                    '<script type="text/javascript" src="/resource/main.js?' + unique + '" /><link r' +
+                    'el="stylesheet" href="/resource/main.css?' + unique + '">'
+                );
+                $("#voteSubmit").submit(voteSubmit);
+                $("#outputSubmit").submit(outputSubmit);
+                inflateRanking();
+                if (document.cookie.includes("keys")) {
+                    fetch('/admin/management.php')
+                        .then(function (res) {
+                            return res.text();
+                        })
+                        .then(function (txt) {
+                            if (txt == "OK") {
+                                let adm = document.getElementById('admin');
+                                adm.setAttribute("data-target", null);
+                                adm.onclick = goTo;
+                            }
+
+                            $('#prescript').remove();
+                        })
+                }
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="navbar navbar-dark bg-dark box-shadow">
+            <div class="container d-flex justify-content-between" style="margin-top:5px;margin-bottom:5px">
+                <a class="navbar-brand d-flex align-items-center no-drag" href="/index.html">
+                    <img src="/resource/main.png" width="50px">
+                    <strong style="margin-left:10px">문화프레임빅데이터연구소</strong>
+                </a>
+                <i class="fas fa-cog fa-2x hover white" data-backdrop="static" data-keyboard="false"
+                    data-target="#myModal" data-toggle="modal" id="admin"></i>
+            </div>
+        </div>
+    </header>
+    <main role="main">
+        <section class="jumbotron text-center" style="background-color:white;margin:0px;padding:20px">
+            <div class="container">
+
+                <div class="row" style="margin-top:20px">
+
+                    <div class="col-md-6" style="margin-bottom: 20px;">
+                        <div class="card bg-light mb-3" style="">
+                            <div class="card-header">Voting</div>
+                            <div class="card-body" style="padding:30px">
+                                <h5 class="card-title">Enter a word to vote</h5>
+                                <br>
+                                <form action="/vote.php" id="voteSubmit" method="get">
+                                    <input class="btn" name="holder" style="display:none;" type="text" value="!">
+                                    <input class="form-control" id="voteInput" name="word"
+                                        placeholder="Enter a word to vote"
+                                        style="text-align:left;background-color:white;width:200px;display:inline-block;"
+                                        type="text">
+                                    <br>
+                                    <button class="btn btn-info my-2" style="width:200px;" type="submit">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" style="margin-bottom: 30px;">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">Ranking</div>
+                            <div class="card-body" style="padding:30px">
+                                <h5 class="card-title">Enter a word for result</h5>
+                                <br>
+                                <form action="/output.php" id="outputSubmit" method="get">
+                                    <input name="nationality" style="display:none;" type="text" value="korea">
+                                    <input class="form-control" id="outputInput" name="term"
+                                        placeholder="Enter a word for result"
+                                        style="text-align:left;background-color:white;width:200px;display:inline-block;"
+                                        type="text">
+                                    <br>
+                                    <button class="btn btn-info my-2" style="width:200px;" type="submit">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="center-block">
+
+                    <div class="card bg-light mb-3">
+                        <div class="card-header">
+                            <h4 class=" no-drag" style="margin: 5px;display:inline-block;">Recent Voting <p
+                                    style="display:inline-block;color:red;">(Please Vote!)
+                                </p>
+                            </h4>
+                        </div>
+                        <div class="card-body" style="padding:0px">
+                            <div class="d-flex justify-content-center" id="spinner2-1" style="margin: 50px;">
+                                <div class="spinner-border text-secondary" id="spin2-1" role="status">
+                                    <span class="sr-only"></span>
+                                </div>
+                            </div>
+                            <table class="table" id="tb12" style="display: none;margin-bottom:0px;">
+                                <thead class="no-drag">
+                                    <th scope="col" style="text-align:center">#</th>
+                                    <th scope="col" style="text-align:center">Word</th>
+                                    <th scope="col" style="text-align:center">value</th>
+                                    <th scope="col" style="text-align:center">percentage</th>
+                                </thead>
+                                <tbody id="inflation"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="card bg-light mb-3">
+                        <div class="card-header">
+                            <h4 class=" no-drag" style="margin: 5px;">Recent Result</h4>
+                        </div>
+                        <div class="card-body" style="padding:0px">
+                            <div class="d-flex justify-content-center" id="spinner2-2" style="margin: 50px;">
+                                <div class="spinner-border text-secondary" id="spin2-2" role="status">
+                                    <span class="sr-only"></span>
+                                </div>
+                            </div>
+                            <table class="table" id="tb13" style="display: none;margin-bottom:0px;">
+                                <thead class="no-drag">
+                                    <th scope="col" style="text-align:center">#</th>
+                                    <th scope="col" style="text-align:center">Word</th>
+                                    <th scope="col" style="text-align:center">value</th>
+                                    <th scope="col" style="text-align:center">date</th>
+                                </thead>
+                                <tbody id="inflation2"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-muted">
+        <div class="container">
+            <p class="no-drag" style="margin-top:16px">ⓒ 문화프레임빅데이터연구소</p>
+        </div>
+    </footer>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="width:auto">
+                <div class="modal-header" style="padding-right:30px;padding-left:30px;">
+                    <h4 class="modal-title no-drag" id="modaltext">Administrator</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" id="modalcontext"
+                        style="padding-right:15px;padding-left:15px;padding-top:15px">
+                        <input class="form-control" id="ID" placeholder="ID" type="text">
+                        <br>
+                        <input class="form-control" id="PW" placeholder="PW" type="password">
+                        <div class="d-flex justify-content-center">
+
+                            <div class="spinner-border text-secondary" id="spin" role="status" style="display: none;">
+                                <span class="sr-only"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding:10px 0 0 0;height:70px">
+                    <button class="btn btn-default no-drag" data-dismiss="modal" id="cancel"
+                        style="margin:0 10px 10px 0" type="btn btm-sm no-drag">Close
+                    </button>
+                    <button class="btn btn-success btn-sm no-drag" id="submit" onclick="checkAdmin();"
+                        style="margin:0 30px 10px 0" type="button">Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

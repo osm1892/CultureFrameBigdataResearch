@@ -1,0 +1,9 @@
+/.idea/workspace.xml
+
+# Added by cargo
+
+/target
+
+cfb/data/photo
+*.sql
+config.ini
