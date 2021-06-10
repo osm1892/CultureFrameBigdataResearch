@@ -75,11 +75,11 @@ if ($resultElement = mysqli_fetch_assoc(mysqli_query($dbConnect, $query))) {
 $c = 0;
 $lowFlag = true;
 
-$query = sprintf('create table %s_image_meta (index_ int primary key, title text, snippet text)', $search);
+$query = sprintf('create table `%s_image_meta` (index_ int primary key, title text, snippet text)', $search);
 mysqli_query($dbConnect, $query);
 
 for ($i = 0; $i < 50; $i++) {
-    $query = sprintf('insert into %s_image_meta(index_) values (%d)', $search, $i);
+    $query = sprintf('insert into `%s_image_meta`(index_) values (%d)', $search, $i);
     mysqli_query($dbConnect, $query);
 }
 
@@ -135,11 +135,11 @@ for ($as = 0; $as < $loop / 10; $as++) {
                     break;
                 }
             }
-            mysqli_query($dbConnect, sprintf("DROP TABLE %s", $search));
-            mysqli_query($dbConnect, sprintf("DROP TABLE %s_split", $search));
-            mysqli_query($dbConnect, sprintf("DROP TABLE %s_image_meta", $search));
+            mysqli_query($dbConnect, sprintf("DROP TABLE `%s`", $search));
+            mysqli_query($dbConnect, sprintf("DROP TABLE `%s_split`", $search));
+            mysqli_query($dbConnect, sprintf("DROP TABLE `%s_image_meta`", $search));
             for ($i = 0; $i < 50; $i++) {
-                mysqli_query($dbConnect, sprintf("DROP TABLE %s_comment%d", $search, $i));
+                mysqli_query($dbConnect, sprintf("DROP TABLE `%s_comment%d`", $search, $i));
             }
             print ("사용량이 초과되었습니다");
             return;
@@ -174,13 +174,13 @@ for ($as = 0; $as < $loop / 10; $as++) {
     //json으로 변환
     $data = json_decode($response, true);
     $data = $data['items'];
-    $createTable = sprintf("CREATE TABLE %s(index_ INT primary key, male0 INT, female0 INT, male1 INT, female1 INT, male2 INT, female2 INT, male3 INT, female3 INT, male4 INT, female4 INT, male5 INT, female5 INT, male6 INT, female6 INT);", $search);
-    $createSplitTable = sprintf("create table %s_split(index_ int primary key, male0_0 int, male0_1 int, male0_2 int, male0_3 int, female0_0 int, female0_1 int, female0_2 int, female0_3 int, male1_0 int, male1_1 int, male1_2 int, male1_3 int, female1_0 int, female1_1 int, female1_2 int, female1_3 int, male2_0 int, male2_1 int, male2_2 int, male2_3 int, female2_0 int, female2_1 int, female2_2 int, female2_3 int, male3_0 int, male3_1 int, male3_2 int, male3_3 int, female3_0 int, female3_1 int, female3_2 int, female3_3 int, male4_0 int, male4_1 int, male4_2 int, male4_3 int, female4_0 int, female4_1 int, female4_2 int, female4_3 int, male5_0 int, male5_1 int, male5_2 int, male5_3 int, female5_0 int, female5_1 int, female5_2 int, female5_3 int, male6_0 int, male6_1 int, male6_2 int, male6_3 int, female6_0 int, female6_1 int, female6_2 int, female6_3 int);", $search);
+    $createTable = sprintf("CREATE TABLE `%s`(index_ INT primary key, male0 INT, female0 INT, male1 INT, female1 INT, male2 INT, female2 INT, male3 INT, female3 INT, male4 INT, female4 INT, male5 INT, female5 INT, male6 INT, female6 INT);", $search);
+    $createSplitTable = sprintf("create table `%s_split`(index_ int primary key, male0_0 int, male0_1 int, male0_2 int, male0_3 int, female0_0 int, female0_1 int, female0_2 int, female0_3 int, male1_0 int, male1_1 int, male1_2 int, male1_3 int, female1_0 int, female1_1 int, female1_2 int, female1_3 int, male2_0 int, male2_1 int, male2_2 int, male2_3 int, female2_0 int, female2_1 int, female2_2 int, female2_3 int, male3_0 int, male3_1 int, male3_2 int, male3_3 int, female3_0 int, female3_1 int, female3_2 int, female3_3 int, male4_0 int, male4_1 int, male4_2 int, male4_3 int, female4_0 int, female4_1 int, female4_2 int, female4_3 int, male5_0 int, male5_1 int, male5_2 int, male5_3 int, female5_0 int, female5_1 int, female5_2 int, female5_3 int, male6_0 int, male6_1 int, male6_2 int, male6_3 int, female6_0 int, female6_1 int, female6_2 int, female6_3 int);", $search);
     mysqli_query($dbConnect, $createTable);
     mysqli_query($dbConnect, $createSplitTable);
 
     for ($i = 0; $i < 50; $i++) {
-        $createCommentTable = sprintf("create table %s_comment%d (index_ int primary key", $search, $i);
+        $createCommentTable = sprintf("create table `%s_comment%d` (index_ int primary key", $search, $i);
         for ($age = 0; $age < 7; $age++) {
             foreach (['male', 'female'] as $gender) {
                 for ($split = 0; $split < 4; $split++) {
@@ -217,15 +217,15 @@ for ($as = 0; $as < $loop / 10; $as++) {
                 curl_close($ch);
 
                 // 이미지에 따라 title 과 snippet 저장
-                $query = sprintf('update %s_image_meta set title = "%s", snippet = "%s" where index_ = %d', $search, base64_encode($data[$i]['title']), base64_encode($data[$i]['snippet']), $c);
+                $query = sprintf('update `%s_image_meta` set title = "%s", snippet = "%s" where index_ = %d', $search, base64_encode($data[$i]['title']), base64_encode($data[$i]['snippet']), $c);
                 mysqli_query($dbConnect, $query);
             } catch (Exception $e) {
                 error_log("image save error");
             }
         }
-        $addToTableValue = sprintf("INSERT INTO %s VALUES (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d);", $search, $c, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        $addToTableValue = sprintf("INSERT INTO `%s` VALUES (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d);", $search, $c, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         mysqli_query($dbConnect, $addToTableValue);
-        $addToSplitTable = sprintf("INSERT INTO %s_split VALUES (%d, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);", $search, $c);
+        $addToSplitTable = sprintf("INSERT INTO `%s_split` VALUES (%d, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);", $search, $c);
         mysqli_query($dbConnect, $addToSplitTable);
     }
 }

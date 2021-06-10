@@ -57,18 +57,17 @@ foreach ($data as $my) {
             }
             foreach ($e_ as $ev) {
                 if (!in_array($ev, $english_ex)) {
-                    $query = "DELETE FROM _terms WHERE term=\"" . $ev . "\";";
-
+                    $query = sprintf('delete from _terms where term = "%s"', $ev);
                     mysqli_query($dbConnect, $query);
 
-                    $query = "DROP TABLE " . $ev;
+                    $query = sprintf("drop table `%s`", $ev);
                     mysqli_query($dbConnect, $query);
-                    $query = "DROP TABLE " . $ev . "_split";
+                    $query = sprintf("drop table `%s_split`", $ev);
                     mysqli_query($dbConnect, $query);
-                    $query = "DROP TABLE " . $ev . "_image_meta";
+                    $query = sprintf("drop table `%s_image_meta`", $ev);
                     mysqli_query($dbConnect, $query);
                     for ($i = 0; $i < 50; $i++) {
-                        $query = "drop table " . $ev . "_comment" . $i;
+                        $query = sprintf("drop table `%s_comment%d`", $ev, $i);
                         mysqli_query($dbConnect, $query);
                     }
                 }
@@ -84,18 +83,17 @@ foreach ($data as $my) {
             }
             foreach ($k_ as $kv) {
                 if (!in_array($kv, $korean_ex)) {
-                    $query = "DELETE FROM _terms WHERE term=\"" . $kv . "\";";
-
+                    $query = sprintf('delete from _terms where term = "%s"', $kv);
                     mysqli_query($dbConnect, $query);
 
-                    $query = "DROP TABLE " . $kv;
+                    $query = sprintf("drop table `%s`", $kv);
                     mysqli_query($dbConnect, $query);
-                    $query = "DROP TABLE " . $kv . "_split";
+                    $query = sprintf("drop table `%s_split`", $kv);
                     mysqli_query($dbConnect, $query);
-                    $query = "DROP TABLE " . $kv . "_image_meta";
+                    $query = sprintf("drop table `%s_image_meta`", $kv);
                     mysqli_query($dbConnect, $query);
                     for ($i = 0; $i < 50; $i++) {
-                        $query = "drop table " . $kv . "_comment" . $i;
+                        $query = sprintf("drop table `%s_comment%d`", $kv, $i);
                         mysqli_query($dbConnect, $query);
                     }
                 }
@@ -111,16 +109,17 @@ foreach ($data as $my) {
             }
             foreach ($c_ as $cv) {
                 if (!in_array($cv, $chinese_ex)) {
-                    $query = "DELETE FROM _terms WHERE term=\"" . $cv . "\";";
+                    $query = sprintf('delete from _terms where term = "%s"', $cv);
                     mysqli_query($dbConnect, $query);
-                    $query = "DROP TABLE " . $cv . ";";
+
+                    $query = sprintf("drop table `%s`", $cv);
                     mysqli_query($dbConnect, $query);
-                    $query = "DROP TABLE " . $cv . "_split";
+                    $query = sprintf("drop table `%s_split`", $cv);
                     mysqli_query($dbConnect, $query);
-                    $query = "DROP TABLE " . $cv . "_image_meta";
+                    $query = sprintf("drop table `%s_image_meta`", $cv);
                     mysqli_query($dbConnect, $query);
                     for ($i = 0; $i < 50; $i++) {
-                        $query = "drop table " . $cv . "_comment" . $i;
+                        $query = sprintf("drop table `%s_comment%d`", $cv, $i);
                         mysqli_query($dbConnect, $query);
                     }
                 }
@@ -136,16 +135,17 @@ foreach ($data as $my) {
             }
             foreach ($j_ as $jv) {
                 if (!in_array($jv, $japanese_ex)) {
-                    $query = sprintf('DELETE FROM _terms WHERE term="%s"', $jv);
+                    $query = sprintf('delete from _terms where term = "%s"', $jv);
                     mysqli_query($dbConnect, $query);
-                    $query = "DROP TABLE " . $jv;
+
+                    $query = sprintf("drop table `%s`", $jv);
                     mysqli_query($dbConnect, $query);
-                    $query = "DROP TABLE " . $jv . "_split";
+                    $query = sprintf("drop table `%s_split`", $jv);
                     mysqli_query($dbConnect, $query);
-                    $query = "DROP TABLE " . $jv . "_image_meta";
+                    $query = sprintf("drop table `%s_image_meta`", $jv);
                     mysqli_query($dbConnect, $query);
                     for ($i = 0; $i < 50; $i++) {
-                        $query = "drop table " . $jv . "_comment" . $i;
+                        $query = sprintf("drop table `%s_comment%d`", $jv, $i);
                         mysqli_query($dbConnect, $query);
                     }
                 }

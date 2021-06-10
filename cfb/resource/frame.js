@@ -82,7 +82,7 @@ function hideValue(signal) {
 }
 
 function trimAll(str) {
-    return str.split(" ").join("");
+    return str.split(/\s/g).join("");
 }
 
 var exinos = [];

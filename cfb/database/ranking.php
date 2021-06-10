@@ -49,7 +49,7 @@ $nationality = $_GET['nationality'];
 
 $result = array("term" => $term, "nationality" => $nationality, "data" => []);
 
-$qr1 = sprintf("SELECT * FROM %s;", $term);
+$qr1 = sprintf("SELECT * FROM `%s`", $term);
 $counting = mysqli_query($dbConnect, $qr1);
 
 $i = 0;
