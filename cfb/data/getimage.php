@@ -26,8 +26,7 @@ if (empty($_GET['search'])) {
     print("<검색어가 비어있습니다.>");
     return;
 }
-$_GET['search'] = urldecode($_GET['search']);
-$search = $_GET['search'];
+$search = urldecode($_GET['search']);
 
 # 검색 단어창이 null이라면 리턴합니다.
 if (strcasecmp($search, 'null') == 0) {
@@ -40,16 +39,14 @@ if (empty($_GET['super'])) {
     print("<검색어가 비어있습니다.>");
     return;
 }
-$_GET['super'] = urldecode($_GET['super']);
-$super = $_GET['super'];
+$super = urldecode($_GET['super']);
 
 # 원 영단어를 확인합니다.
 if (empty($_GET['origin'])) {
     print("<검색어가 비어있습니다.>");
     return;
 }
-$_GET['origin'] = urldecode($_GET['origin']);
-$origin = $_GET['origin'];
+$origin = urldecode($_GET['origin']);
 
 // api key
 $key = $config['api']['key'];

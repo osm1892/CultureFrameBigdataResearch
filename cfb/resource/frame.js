@@ -227,7 +227,7 @@ function recursive(integer, terms, data) {
         console.log(`${tm} : ${superTable[tm]}`);
         timeout(
             300000,
-            fetch(`/data/getimage.php?search=${encodeURIComponent(tm)}&super=${term}&origin=${origin}&nation=${superTable[tm]}`, {credentials: "same-origin"})
+            fetch(`/data/getimage.php?search=${encodeURIComponent(tm)}&super=${encodeURIComponent(term)}&origin=${encodeURIComponent(origin)}&nation=${encodeURIComponent(superTable[tm])}`, {credentials: "same-origin"})
         )
             .then(res => res.text())
             .then(txt => {

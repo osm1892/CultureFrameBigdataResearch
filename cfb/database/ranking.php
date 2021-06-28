@@ -45,8 +45,7 @@ if (empty($_GET['nationality'])) {
     }
 }
 
-$_GET['nationality'] = urldecode($_GET['nationality']);
-$nationality = $_GET['nationality'];
+$nationality = urldecode($_GET['nationality']);
 
 $result = array("term" => $term, "nationality" => $nationality, "data" => []);
 

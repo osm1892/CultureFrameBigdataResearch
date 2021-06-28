@@ -10,10 +10,10 @@ if ($dbConnect->connect_errno) {
 if (empty($_GET['word'])) {
     $_GET['word'] = "";
 }
-$_GET['word'] = urldecode($_GET['word']);
+$word = urldecode($_GET['word']);
 
 $GLOBALS['exist'] = false;
-$qr = "SELECT term FROM _terms WHERE term=\"" . $_GET['word'] . "\";";
+$qr = "SELECT term FROM _terms WHERE term=\"" . $word . "\";";
 
 if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
     $GLOBALS['exist'] = true;
@@ -54,7 +54,7 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
                     .reload()
                 return;
             }
-            data.term = "<?php echo $_GET['word'];?>"
+            data.term = "<?php echo $word;?>"
             let spin = $('#spin');
             if (spin != null) {
                 spin.hide();
@@ -125,11 +125,10 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
                     <div class="card-body" style="padding:30px">
                         <h1 class="jumbotron-heading no-drag">
                             <?php
-                            if (!empty($_GET['word'])) {
-                                $word = $_GET['word'];
+                            if (!empty($word)) {
                                 if (is_dir('data/photo/' . urlencode($word)) && $GLOBALS['exist']) {
                                     print('
-<p style="display: inline-block;font-size:xx-large;"><strong class="str">★</strong> &nbsp' . $_GET['word'] . '&nbsp <strong class="str">★</strong></p>
+<p style="display: inline-block;font-size:xx-large;"><strong class="str">★</strong> &nbsp' . $word . '&nbsp <strong class="str">★</strong></p>
 <p style="margin-top:10px;color:red; font-size:x-large;">해당 단어의 의미를 가장 잘 표현하는 이미지 3개를 선택해주세요!</p>
 <p style="color:green; font-size:x-large;">Choose 3 images which best express the meaning of the word!</p>
 <p style="color:blue; font-size:x-large;">該当する単語の意味を一番よく表しているイメージを3つお選びください!</p>
@@ -163,15 +162,14 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
                                 <div class="row">
                                     <?php
                                     $mCount = 50;
-                                    if (!empty($_GET['word'])) {
-                                        $word = $_GET['word'];
+                                    if (!empty($word)) {
                                         if (is_dir('data/photo/' . urlencode($word)) && $GLOBALS['exist']) {
                                             for ($i = 0; $i < $mCount; $i++) {
                                                 print('
 <div id="load' . $i . '" class="col-md-3">
     <div id="div' . $i . '" class="card mb-3 box-shadow" style="position: relative;">
         <input type="checkbox" id="check' . $i . '" style="position: absolute;zoom: 2;" onclick = "imageClickListener(' . $i . ', false)">
-        <img class="card-img-top no-drag" id="image' . $i . '" onclick = "imageClickListener(' . $i . ')" onerror="hide(\'load' . $i . '\')" src="data/photo/' . $word . '/' . $i . '.jpg" style="">
+        <img class="card-img-top no-drag" id="image' . $i . '" onclick = "imageClickListener(' . $i . ')" onerror="hide(\'load' . $i . '\')" src="data/photo/' . urlencode(urlencode($word)) . '/' . $i . '.jpg" style="">
     </div>
 </div>
                                                         ');
@@ -213,8 +211,7 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
                     <div class="card-body" style="padding:30px">
                         <h1 class="jumbotron-heading no-drag">
                             <?php
-                            if (!empty($_GET['word'])) {
-                                $word = $_GET['word'];
+                            if (!empty($word)) {
                                 if (is_dir('data/photo/' . urlencode($word)) && $GLOBALS['exist']) {
                                     print('
 <strong id="selectedCnt2">0</strong> 
@@ -321,7 +318,7 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
         <!-- Modal content-->
         <div class="modal-content" style="width:350px">
             <?php
-            if (!empty($_GET['word']) && is_dir('data/photo/' . urlencode($_GET['word'])) && $GLOBALS['exist']) {
+            if (!empty($word) && is_dir('data/photo/' . urlencode($word)) && $GLOBALS['exist']) {
                 print('
     <div class="modal-header" style="padding-right:30px;padding-left:30px;">
         <h4 class="modal-title no-drag">Thank you!</h4>
@@ -388,7 +385,7 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
 </div>
                         ');
             } else {
-                if (!empty($_GET['word'])) {
+                if (!empty($word)) {
                     print('
 <div class="modal-header" style="padding-right:30px;padding-left:30px;">
     <h4 class="modal-title no-drag">Downloading Image</h4>

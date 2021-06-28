@@ -190,7 +190,8 @@ function setRanking() {
             let VZ = ia ? v[z] : sm;
 
             if (VZ[c - 1].dt != 0) {
-                src = `data/photo/${encodeURIComponent(TERM)}/${VZ[c - 1].index}.jpg`;
+                // 브라우저에서 URL을 자체적으로 디코딩 하기 때문에, 인코딩을 두번 해주어야 올바른 파일 경로를 참조합니다.
+                src = `data/photo/${encodeURIComponent(encodeURIComponent(TERM))}/${VZ[c - 1].index}.jpg`;
                 $(ale).attr("src", src);
                 $(ale).attr("title", `${VZ[c - 1].dt} / ${sum_m}`)
                 ln = ((VZ[c - 1].dt / sum_m) * 100).toFixed(2);

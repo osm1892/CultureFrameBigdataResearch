@@ -108,7 +108,7 @@ function inflation(data, data2) {
                 `
         <tr class="no-drag">
             <th>${b + 1}</th>
-            <td><a  href="/vote.php?word=${a.term}" class="term">${a.term}</a></td>
+            <td><a  href="/vote.php?word=${encodeURIComponent(a.term)}" class="term">${a.term}</a></td>
             <td>${a.value}</td>
             <td>${a.percent}</td>
         </tr>
