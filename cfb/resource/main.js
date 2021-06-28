@@ -16,7 +16,7 @@ function checkAdmin() {
 
     let pwe = btoa(SHA256(pwV.val()));
 
-    timeout(300000, fetch(`/admin/management.php?id=${idV.val()}&pw=${pwe}`))
+    timeout(300000, fetch(`/admin/management.php?id=${encodeURIComponent(idV.val())}&pw=${encodeURIComponent(pwe)}`))
         .then(
             res => res.text()
         )
@@ -122,7 +122,7 @@ function inflation(data, data2) {
                 `
         <tr class="no-drag">
             <th>${b + 1}</th>
-            <td><a  href="/output.php?nationality=korea&term=${a.term}" class="term">${a.term}</a></td>
+            <td><a  href="/output.php?nationality=korea&term=${encodeURIComponent(a.term)}" class="term">${a.term}</a></td>
             <td>${a.value}</td>
             <td>${a.date}</td>
         </tr>

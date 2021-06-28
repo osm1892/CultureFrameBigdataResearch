@@ -9,6 +9,7 @@ if ($dbConnect->errno) {
 if (empty($_GET['term'])) {
     $_GET['term'] = "";
 }
+$_GET['term'] = urldecode($_GET['term']);
 
 function isChinese($string) {
     return preg_match("/\p{Han}+/u", $string);
@@ -44,7 +45,7 @@ if (empty($_GET['index'])) {
 $indexx = $_GET['index'];
 
 $origins = array();
-$myUrl = sprintf("output.php?nationality=%s&term=%s&index=", $_GET['nationality'], $_GET['term']);
+$myUrl = sprintf("output.php?nationality=%s&term=%s&index=", $_GET['nationality'], urlencode($_GET['term']));
 $cntt = 0;
 
 $aaa = mysqli_query($dbConnect, $qr);

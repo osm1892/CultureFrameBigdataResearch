@@ -11,41 +11,44 @@ $dbConnect = new mysqli(
     $config['database']['port']
 );
 if ($dbConnect->connect_errno) {
-    die("mysql error");
+    die("<mysql error>");
 }
 
 # 인증 데이터를 확인합니다.
 $val = hash('sha256', $config['server']['hashed_pw']);
 if (empty($_COOKIE['keys']) || $val != $_COOKIE['keys']) {
-    print("잘못된 접근입니다.");
+    print("<잘못된 접근입니다.>");
     return;
 }
 
 # 검색 데이터를 확인합니다.
 if (empty($_GET['search'])) {
-    print('검색어가 비어있습니다.');
+    print("<검색어가 비어있습니다.>");
     return;
 }
+$_GET['search'] = urldecode($_GET['search']);
 $search = $_GET['search'];
 
 # 검색 단어창이 null이라면 리턴합니다.
 if (strcasecmp($search, 'null') == 0) {
-    print("저장되었습니다!!");
+    print("저장되었습니다.");
     return;
 }
 
 # super term을 확인합니다.
 if (empty($_GET['super'])) {
-    print("검색어가 비어있습니다.");
+    print("<검색어가 비어있습니다.>");
     return;
 }
+$_GET['super'] = urldecode($_GET['super']);
 $super = $_GET['super'];
 
 # 원 영단어를 확인합니다.
 if (empty($_GET['origin'])) {
-    print("검색어가 비어있습니다.");
+    print("<검색어가 비어있습니다.>");
     return;
 }
+$_GET['origin'] = urldecode($_GET['origin']);
 $origin = $_GET['origin'];
 
 // api key
@@ -53,7 +56,7 @@ $key = $config['api']['key'];
 $engineID = $config['api']['engine'];
 
 # 단어의 국적에 따라, api key 를 다르게 설정합니다.
-switch ($_GET['nation']) {
+switch (urldecode($_GET['nation'])) {
     case 'chinese':
         $engineID = $config['api']['engine_cn'];
         break;
@@ -92,7 +95,7 @@ for ($as = 0; $as < $loop / 10; $as++) {
         $url = "https://www.googleapis.com/customsearch/v1?key=" . $key . "&cx=" . $engineID . "&searchType=image&q=" . $search . "&num=10&start=" . $as * 10;
     }
     */
-    $url = "https://www.googleapis.com/customsearch/v1?key=" . $key . "&cx=" . $engineID . "&searchType=image&q=" . $search . "&num=10&start=" . $as * 10;
+    $url = "https://www.googleapis.com/customsearch/v1?key=" . $key . "&cx=" . $engineID . "&searchType=image&q=" . urlencode($search) . "&num=10&start=" . $as * 10;
     try {
         $response = file_get_contents($url);
         if (strpos($response, 'usageLimits') !== false) {
@@ -154,11 +157,10 @@ for ($as = 0; $as < $loop / 10; $as++) {
         return;
     }
     try {
-        if (!is_dir("photo/" . $search)) {
-            mkdir("photo/" . $search);
+        if (!is_dir("photo/" . urlencode($search))) {
+            mkdir("photo/" . urlencode($search));
         } else {
-            $fi = new FilesystemIterator("photo/" . $search, FilesystemIterator::SKIP_DOTS);
-            //print(iterator_count($fi));
+            $fi = new FilesystemIterator("photo/" . urlencode($search), FilesystemIterator::SKIP_DOTS);
             if ($lowFlag && iterator_count($fi) >= 50) {
                 $lowFlag = false;
             }
@@ -203,7 +205,7 @@ for ($as = 0; $as < $loop / 10; $as++) {
                 //이미지 주소
                 $url = $data[$i]['link'];
                 //저장 경로
-                $location = "photo/" . $search . "/";
+                $location = "photo/" . urlencode($search) . "/";
                 //이미지 저장
                 $fp = fopen($location . $c . ".jpg", "wb");
                 $ch = curl_init();
@@ -217,6 +219,7 @@ for ($as = 0; $as < $loop / 10; $as++) {
                 curl_close($ch);
 
                 // 이미지에 따라 title 과 snippet 저장
+                // base64가 URL safe하지 않아, GET을 통한 전송시 urlencode 함수를 사용해야 합니다.
                 $query = sprintf('update `%s_image_meta` set title = "%s", snippet = "%s" where index_ = %d', $search, base64_encode($data[$i]['title']), base64_encode($data[$i]['snippet']), $c);
                 mysqli_query($dbConnect, $query);
             } catch (Exception $e) {

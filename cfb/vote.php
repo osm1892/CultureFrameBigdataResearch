@@ -10,8 +10,7 @@ if ($dbConnect->connect_errno) {
 if (empty($_GET['word'])) {
     $_GET['word'] = "";
 }
-
-$_GET['word'] = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $_GET['word']);
+$_GET['word'] = urldecode($_GET['word']);
 
 $GLOBALS['exist'] = false;
 $qr = "SELECT term FROM _terms WHERE term=\"" . $_GET['word'] . "\";";
@@ -128,7 +127,7 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
                             <?php
                             if (!empty($_GET['word'])) {
                                 $word = $_GET['word'];
-                                if (is_dir('data/photo/' . $word) && $GLOBALS['exist']) {
+                                if (is_dir('data/photo/' . urlencode($word)) && $GLOBALS['exist']) {
                                     print('
 <p style="display: inline-block;font-size:xx-large;"><strong class="str">★</strong> &nbsp' . $_GET['word'] . '&nbsp <strong class="str">★</strong></p>
 <p style="margin-top:10px;color:red; font-size:x-large;">해당 단어의 의미를 가장 잘 표현하는 이미지 3개를 선택해주세요!</p>
@@ -166,7 +165,7 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
                                     $mCount = 50;
                                     if (!empty($_GET['word'])) {
                                         $word = $_GET['word'];
-                                        if (is_dir('data/photo/' . $word) && $GLOBALS['exist']) {
+                                        if (is_dir('data/photo/' . urlencode($word)) && $GLOBALS['exist']) {
                                             for ($i = 0; $i < $mCount; $i++) {
                                                 print('
 <div id="load' . $i . '" class="col-md-3">
@@ -216,7 +215,7 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
                             <?php
                             if (!empty($_GET['word'])) {
                                 $word = $_GET['word'];
-                                if (is_dir('data/photo/' . $word) && $GLOBALS['exist']) {
+                                if (is_dir('data/photo/' . urlencode($word)) && $GLOBALS['exist']) {
                                     print('
 <strong id="selectedCnt2">0</strong> 
 / 3 items Selected.</h1>
@@ -322,7 +321,7 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
         <!-- Modal content-->
         <div class="modal-content" style="width:350px">
             <?php
-            if (!empty($_GET['word']) && is_dir('data/photo/' . $_GET['word']) && $GLOBALS['exist']) {
+            if (!empty($_GET['word']) && is_dir('data/photo/' . urlencode($_GET['word'])) && $GLOBALS['exist']) {
                 print('
     <div class="modal-header" style="padding-right:30px;padding-left:30px;">
         <h4 class="modal-title no-drag">Thank you!</h4>

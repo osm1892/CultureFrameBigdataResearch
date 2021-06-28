@@ -16,7 +16,7 @@ function setUp(term) {
 
     $('#hcls').text(TERM);
 
-    fetch(`/database/ranking.php?term=${term}`)
+    fetch(`/database/ranking.php?term=${encodeURIComponent(term)}`)
         .then(
             res => {
                 if (res.ok) {
@@ -190,7 +190,7 @@ function setRanking() {
             let VZ = ia ? v[z] : sm;
 
             if (VZ[c - 1].dt != 0) {
-                src = `data/photo/${TERM}/${VZ[c - 1].index}.jpg`;
+                src = `data/photo/${encodeURIComponent(TERM)}/${VZ[c - 1].index}.jpg`;
                 $(ale).attr("src", src);
                 $(ale).attr("title", `${VZ[c - 1].dt} / ${sum_m}`)
                 ln = ((VZ[c - 1].dt / sum_m) * 100).toFixed(2);

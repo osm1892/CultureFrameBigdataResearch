@@ -44,7 +44,7 @@ $_GET['word'] = ucfirst($_GET['word']);
         $(window).on('load', function () {
             appendList();
 
-            fetch(`/frameNetData/parse.php?term=${term}`)
+            fetch(`/frameNetData/parse.php?term=${encodeURIComponent(term)}`)
                 .then(res => {
                     if (res.ok) {
                         return res.json()

@@ -52,7 +52,7 @@ function doit(data) {
 function appendList() {
     for (let ct = 0; ct < SUPERSET.length; ct++) {
         $('#smartboy').append(`
-        <a href="/frame.php?word=${SUPERSET[ct]}">${SUPERSET[ct]}</a><br>
+        <a href="/frame.php?word=${encodeURIComponent(SUPERSET[ct])}">${SUPERSET[ct]}</a><br>
         `);
     }
 
@@ -227,7 +227,7 @@ function recursive(integer, terms, data) {
         console.log(`${tm} : ${superTable[tm]}`);
         timeout(
             300000,
-            fetch(`/data/getimage.php?search=${tm}&super=${term}&origin=${origin}&nation=${superTable[tm]}`, {credentials: "same-origin"})
+            fetch(`/data/getimage.php?search=${encodeURIComponent(tm)}&super=${term}&origin=${origin}&nation=${superTable[tm]}`, {credentials: "same-origin"})
         )
             .then(res => res.text())
             .then(txt => {

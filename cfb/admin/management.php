@@ -12,8 +12,8 @@ if (isset($_COOKIE['keys']) && $val == $_COOKIE['keys']) {
 }
 
 // url로 넘겨진 id와 pw 데이터를 받아옵니다.
-$id = $_GET['id'];
-$pw = $_GET['pw'];
+$id = urldecode($_GET['id']);
+$pw = urldecode($_GET['pw']);
 
 if (isset($_GET['id']) && isset($_GET['pw']) && $id == $myID && $myPw == $pw) {
     print(hash('sha256', $myPw, false));
