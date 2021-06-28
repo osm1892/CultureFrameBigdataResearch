@@ -70,6 +70,7 @@ foreach ($data as $my) {
                         $query = sprintf("drop table `%s_comment%d`", $ev, $i);
                         mysqli_query($dbConnect, $query);
                     }
+                    exec(sprintf("rm -rf photo/%s", urlencode($ev)));
                 }
             }
             /************/
@@ -96,6 +97,7 @@ foreach ($data as $my) {
                         $query = sprintf("drop table `%s_comment%d`", $kv, $i);
                         mysqli_query($dbConnect, $query);
                     }
+                    exec(sprintf("rm -rf photo/%s", urlencode($kv)));
                 }
             }
             /************/
@@ -122,6 +124,7 @@ foreach ($data as $my) {
                         $query = sprintf("drop table `%s_comment%d`", $cv, $i);
                         mysqli_query($dbConnect, $query);
                     }
+                    exec(sprintf("rm -rf photo/%s", urlencode($cv)));
                 }
             }
             /************/
@@ -148,6 +151,7 @@ foreach ($data as $my) {
                         $query = sprintf("drop table `%s_comment%d`", $jv, $i);
                         mysqli_query($dbConnect, $query);
                     }
+                    exec(sprintf("rm -rf photo/%s", urlencode($jv)));
                 }
             }
             $flag = true;

@@ -1,4 +1,5 @@
 <?php
+
 # ini config 데이터를 불러옵니다.
 $config = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . "/.." . "/config.ini", true);
 
@@ -73,7 +74,6 @@ if ($resultElement = mysqli_fetch_assoc(mysqli_query($dbConnect, $query))) {
     $imageCount = $resultElement["image"];
 }
 $c = 0;
-$lowFlag = true;
 
 $query = sprintf('create table `%s_image_meta` (index_ int primary key, title text, snippet text)', $search);
 mysqli_query($dbConnect, $query);
@@ -157,10 +157,7 @@ for ($as = 0; $as < $loop / 10; $as++) {
         if (!is_dir("photo/" . urlencode($search))) {
             mkdir("photo/" . urlencode($search));
         } else {
-            $fi = new FilesystemIterator("photo/" . urlencode($search), FilesystemIterator::SKIP_DOTS);
-            if ($lowFlag && iterator_count($fi) >= 50) {
-                $lowFlag = false;
-            }
+            exec(sprintf("rm -rf %s", urlencode($search)));
         }
     } catch (Exception $e) {
         print ("
@@ -197,31 +194,29 @@ for ($as = 0; $as < $loop / 10; $as++) {
         if ($c < $imageCount)
             continue;
 
-        if ($lowFlag) {
-            try {
-                //이미지 주소
-                $url = $data[$i]['link'];
-                //저장 경로
-                $location = "photo/" . urlencode($search) . "/";
-                //이미지 저장
-                $fp = fopen($location . $c . ".jpg", "wb");
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_HEADER, 0);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)");
-                curl_setopt($ch, CURLOPT_FILE, $fp);
-                curl_exec($ch);
-                fclose($fp);
-                curl_close($ch);
+        try {
+            //이미지 주소
+            $url = $data[$i]['link'];
+            //저장 경로
+            $location = "photo/" . urlencode($search) . "/";
+            //이미지 저장
+            $fp = fopen($location . $c . ".jpg", "wb");
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)");
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_exec($ch);
+            fclose($fp);
+            curl_close($ch);
 
-                // 이미지에 따라 title 과 snippet 저장
-                // base64가 URL safe하지 않아, GET을 통한 전송시 urlencode 함수를 사용해야 합니다.
-                $query = sprintf('update `%s_image_meta` set title = "%s", snippet = "%s" where index_ = %d', $search, base64_encode($data[$i]['title']), base64_encode($data[$i]['snippet']), $c);
-                mysqli_query($dbConnect, $query);
-            } catch (Exception $e) {
-                error_log("image save error");
-            }
+            // 이미지에 따라 title 과 snippet 저장
+            // base64가 URL safe하지 않아, GET을 통한 전송시 urlencode 함수를 사용해야 합니다.
+            $query = sprintf('update `%s_image_meta` set title = "%s", snippet = "%s" where index_ = %d', $search, base64_encode($data[$i]['title']), base64_encode($data[$i]['snippet']), $c);
+            mysqli_query($dbConnect, $query);
+        } catch (Exception $e) {
+            error_log("image save error");
         }
         $addToTableValue = sprintf("INSERT INTO `%s` VALUES (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d);", $search, $c, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         mysqli_query($dbConnect, $addToTableValue);
