@@ -27,7 +27,7 @@ if (empty($_GET['search'])) {
     print("<검색어가 비어있습니다.>");
     return;
 }
-$search = urldecode($_GET['search']);
+$search = rawurldecode($_GET['search']);
 
 # 검색 단어창이 null이라면 리턴합니다.
 if (strcasecmp($search, 'null') == 0) {
@@ -40,21 +40,21 @@ if (empty($_GET['super'])) {
     print("<검색어가 비어있습니다.>");
     return;
 }
-$super = urldecode($_GET['super']);
+$super = rawurldecode($_GET['super']);
 
 # 원 영단어를 확인합니다.
 if (empty($_GET['origin'])) {
     print("<검색어가 비어있습니다.>");
     return;
 }
-$origin = urldecode($_GET['origin']);
+$origin = rawurldecode($_GET['origin']);
 
 // api key
 $key = $config['api']['key'];
 $engineID = $config['api']['engine'];
 
 # 단어의 국적에 따라, api key 를 다르게 설정합니다.
-switch (urldecode($_GET['nation'])) {
+switch (rawurldecode($_GET['nation'])) {
     case 'chinese':
         $engineID = $config['api']['engine_cn'];
         break;
@@ -92,7 +92,7 @@ for ($as = 0; $as < $loop / 10; $as++) {
         $url = "https://www.googleapis.com/customsearch/v1?key=" . $key . "&cx=" . $engineID . "&searchType=image&q=" . $search . "&num=10&start=" . $as * 10;
     }
     */
-    $url = "https://www.googleapis.com/customsearch/v1?key=" . $key . "&cx=" . $engineID . "&searchType=image&q=" . urlencode($search) . "&num=10&start=" . $as * 10;
+    $url = "https://www.googleapis.com/customsearch/v1?key=" . $key . "&cx=" . $engineID . "&searchType=image&q=" . rawurlencode($search) . "&num=10&start=" . $as * 10;
     try {
         $response = file_get_contents($url);
         if (strpos($response, 'usageLimits') !== false) {
@@ -154,10 +154,10 @@ for ($as = 0; $as < $loop / 10; $as++) {
         return;
     }
     try {
-        if (!is_dir("photo/" . urlencode($search))) {
-            mkdir("photo/" . urlencode($search));
+        if (!is_dir("photo/" . rawurlencode($search))) {
+            mkdir("photo/" . rawurlencode($search));
         } else {
-            exec(sprintf("rm -rf %s", urlencode($search)));
+            exec(sprintf("rm -rf %s", rawurlencode($search)));
         }
     } catch (Exception $e) {
         print ("
@@ -198,7 +198,7 @@ for ($as = 0; $as < $loop / 10; $as++) {
             //이미지 주소
             $url = $data[$i]['link'];
             //저장 경로
-            $location = "photo/" . urlencode($search) . "/";
+            $location = "photo/" . rawurlencode($search) . "/";
             //이미지 저장
             $fp = fopen($location . $c . ".jpg", "wb");
             $ch = curl_init();
@@ -212,7 +212,7 @@ for ($as = 0; $as < $loop / 10; $as++) {
             curl_close($ch);
 
             // 이미지에 따라 title 과 snippet 저장
-            // base64가 URL safe하지 않아, GET을 통한 전송시 urlencode 함수를 사용해야 합니다.
+            // base64가 URL safe하지 않아, GET을 통한 전송시 rawurlencode 함수를 사용해야 합니다.
             $query = sprintf('update `%s_image_meta` set title = "%s", snippet = "%s" where index_ = %d', $search, base64_encode($data[$i]['title']), base64_encode($data[$i]['snippet']), $c);
             mysqli_query($dbConnect, $query);
         } catch (Exception $e) {
