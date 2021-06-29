@@ -81,8 +81,13 @@ function hideValue(signal) {
     );
 }
 
+// 콤마로 구분된 모든 단어에 대해 trim을 적용한 후, 다시 합쳐서 반환합니다.
 function trimAll(str) {
-    return str.split(/\s/g).join("");
+    let splitted = str.split(",");
+    for (let i = 0; i < splitted.length; i++) {
+        splitted[i] = splitted[i].trim();
+    }
+    return splitted.join(",");
 }
 
 var exinos = [];
