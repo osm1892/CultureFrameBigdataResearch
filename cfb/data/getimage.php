@@ -2,6 +2,7 @@
 
 # ini config 데이터를 불러옵니다.
 $config = parse_ini_file($_SERVER['DOCUMENT_ROOT'] . "/.." . "/config.ini", true);
+ini_set('user_agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0');
 
 # DB에 연결합니다.
 $dbConnect = new mysqli(
@@ -94,7 +95,8 @@ for ($as = 0; $as < $loop / 10; $as++) {
     */
     $url = "https://www.googleapis.com/customsearch/v1?key=" . $key . "&cx=" . $engineID . "&searchType=image&q=" . rawurlencode($search) . "&num=10&start=" . $as * 10;
     try {
-        $response = file_get_contents($url);
+        $ctx = stream_context_create(['http'=>['timeout'=>3]]);
+        $response = file_get_contents($url, false, $ctx);
         if (strpos($response, 'usageLimits') !== false) {
             $query = sprintf('delete from _terms where term = "%s" and origin = "%s"', $search, $origin);
             mysqli_query($dbConnect, $query);
@@ -205,8 +207,10 @@ for ($as = 0; $as < $loop / 10; $as++) {
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)");
+            curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0");
             curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
             curl_exec($ch);
             fclose($fp);
             curl_close($ch);
