@@ -28,3 +28,10 @@
     text-align: left;
     vertical-align: middle;
 }
+
+/* 모바일 대응 코드 */
+@media (max-width: 767px) {
+    .modal-content {
+        width: 306px;
+    }
+}

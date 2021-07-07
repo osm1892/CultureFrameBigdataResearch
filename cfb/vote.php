@@ -72,7 +72,7 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
     </script>
 </head>
 
-<body>
+<body onload="bodyOnLoadListener();">
 <header>
     <div class="navbar navbar-dark bg-dark box-shadow">
         <div
@@ -248,22 +248,22 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
             <div class="modal-body">
                 <div>
                     <div class="row">
-                        <div class="col-md-6" style="margin: 1% -10px 1% 2%;">
+                        <div class="col-md-6" id="splitCol0">
                             <div class="card-img" id="splitImgCard0">
                                 <img class="card-img-top no-drag" id="splitImg0">
                             </div>
                         </div>
-                        <div class="col-md-6" style="margin: 1% 0 1% -10px;">
+                        <div class="col-md-6" id="splitCol2">
                             <div class="card-img" id="splitImgCard2">>
                                 <img class="card-img-top no-drag" id="splitImg2">
                             </div>
                         </div>
-                        <div class="col-md-6" style="margin: 1% -10px 1% 2%;">
+                        <div class="col-md-6" id="splitCol1">
                             <div class="card-img" id="splitImgCard1">>
                                 <img class="card-img-top no-drag" id="splitImg1">
                             </div>
                         </div>
-                        <div class="col-md-6" style="margin: 1% 0 1% -10px;">
+                        <div class="col-md-6" id="splitCol3">
                             <div class="card-img" id="splitImgCard3">>
                                 <img class="card-img-top no-drag" id="splitImg3">
                             </div>

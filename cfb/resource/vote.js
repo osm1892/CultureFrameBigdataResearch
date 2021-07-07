@@ -16,6 +16,9 @@ let currentImgOrder = 0;
 // comment 중에서 현재 표시되는 위치입니다.
 let commentPos = 0;
 
+// 
+let splitCardImgStyle = "";
+
 // 쿠키에 데이터를 추가합니다.
 function addCookie(key, value) {
     if (document.cookie !== "") {
@@ -56,6 +59,54 @@ function setCookie(key, value) {
         // 해당 값이 존재한다면, 기존 값을 제거하고, 새로 추가합니다.
         delCookie(key);
         addCookie(key, value);
+    }
+}
+
+// body가 로딩되었을 시 실행되는 함수입니다.
+function bodyOnLoadListener() {
+    // 모바일 사이즈 변환에 따른 창 크기 대응
+    modalAdjust();
+    window.addEventListener('resize', function () {
+        modalAdjust();
+    });
+}
+
+// 화면 크기를 인식하여, modal에서 나타나는 컨텐츠의 상태를 조정하는 함수입니다.
+function modalAdjust() {
+    if (screen.width < 768) {
+        splitCardImgStyle = "width: 100px; height: auto; object-fit: contain;";
+        for (let i = 0; i < 4; i++) {
+            const col = document.getElementById(`splitCol${i}`);
+            col.className = "col-xs-6";
+            if (i < 2) {
+                col.style = "margin: 1% 1% 1% 15%;";
+            } else {
+                col.style = "margin: 1% 1% 1% 1%;";
+            }
+        }
+        document.getElementById("commentArea").cols = "30";
+    } else {
+        splitCardImgStyle = "";
+        for (let i = 0; i < 4; i++) {
+            const col = document.getElementById(`splitCol${i}`);
+            col.className = "col-md-6";
+            if (i < 2) {
+                col.style = "margin: 1% -10px 1% 2%;";
+            } else {
+                col.style = "margin: 1% 0 1% -10px;";
+            }
+        }
+        document.getElementById("commentArea").cols = "40";
+    }
+
+    for (let i = 0; i < 4; i += 1) {
+        if (data.splitVoteds[currentImgOrder][i] === 1) {
+            document.getElementById(`splitImgCard${i}`).style = splitCardImgStyle + "background-color:black;";
+            document.getElementById(`splitImg${i}`).className = "card-img-top backgroundDark no-drag";
+        } else {
+            document.getElementById(`splitImgCard${i}`).style = splitCardImgStyle + "";
+            document.getElementById(`splitImg${i}`).className = "card-img-top no-drag";
+        }
     }
 }
 
@@ -134,11 +185,12 @@ function cutImageUp(imageNum) {
     for(let x = 0; x < 2; ++x) {
         for(let y = 0; y < 2; ++y) {
             let canvas = document.createElement('canvas');
-            canvas.width = image.naturalWidth / 2;
-            canvas.height = image.naturalHeight / 2;
             let context = canvas.getContext('2d');
             let width = image.naturalWidth / 2;
             let height = image.naturalHeight / 2;
+            canvas.width = image.naturalWidth / 2;
+            canvas.height = image.naturalHeight / 2;
+
             context.drawImage(image, x * width, y * height, width, height, 0, 0, canvas.width, canvas.height);
             imagePieces.push(canvas.toDataURL());
         }
@@ -150,14 +202,9 @@ function cutImageUp(imageNum) {
     for (let pos = 0; pos < 4; pos++) {
         let imagePiece = document.getElementById('splitImg' + pos);
         imagePiece.src = imagePieces[pos];
-        if (data.splitVoteds[currentImgOrder][pos] === 1) {
-            document.getElementById(`splitImgCard${pos}`).style = "background-color:black;";
-            imagePiece.className = "card-img-top backgroundDark no-drag";
-        } else {
-            document.getElementById(`splitImgCard${pos}`).style = ";";
-            imagePiece.className = "card-img-top no-drag";
-        }
     }
+    // modal 화면을 조정합니다.
+    modalAdjust();
 }
 
 // split modal 에 이동 버튼을 눌렀을 경우 호출되는 함수입니다.
@@ -172,10 +219,7 @@ function splitMoveClick(move) {
 function splitClose() {
     data.splitVoteds = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
 
-    for (let i = 0; i < 4; i++) {
-        document.getElementById(`splitImgCard${i}`).style = "";
-        document.getElementById(`splitImg${i}`).className = "card-img-top no-drag";
-    }
+    modalAdjust();
 
     $("#splitSelectModal").modal('hide');
 }
@@ -191,10 +235,7 @@ function splitSave() {
         return;
     }
 
-    for (let i = 0; i < 4; i++) {
-        document.getElementById(`splitImgCard${i}`).style = "";
-        document.getElementById(`splitImg${i}`).className = "card-img-top no-drag";
-    }
+    modalAdjust();
 
     $("#commentModal").modal("show");
 }
@@ -207,15 +248,7 @@ function splitImageClickListener(pos) {
         data.splitVoteds[currentImgOrder][pos] = 1;
     }
 
-    for (let i = 0; i < 4; i += 1) {
-        if (data.splitVoteds[currentImgOrder][i] === 1) {
-            document.getElementById(`splitImgCard${i}`).style = "background-color:black;";
-            document.getElementById(`splitImg${i}`).className = "card-img-top backgroundDark no-drag";
-        } else {
-            document.getElementById(`splitImgCard${i}`).style = "";
-            document.getElementById(`splitImg${i}`).className = "card-img-top no-drag";
-        }
-    }
+    modalAdjust();
 }
 
 function commentMove(move) {
