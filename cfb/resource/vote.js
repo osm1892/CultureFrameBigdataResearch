@@ -84,7 +84,7 @@ function modalAdjust() {
                 col.style = "margin: 1% 1% 1% 1%;";
             }
         }
-        document.getElementById("commentArea").cols = "30";
+        document.getElementById("commentArea").cols = "25";
     } else {
         splitCardImgStyle = "";
         for (let i = 0; i < 4; i++) {
