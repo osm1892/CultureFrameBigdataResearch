@@ -73,7 +73,7 @@ function bodyOnLoadListener() {
 
 // 화면 크기를 인식하여, modal에서 나타나는 컨텐츠의 상태를 조정하는 함수입니다.
 function modalAdjust() {
-    if (screen.width < 768) {
+    if (window.innerWidth < 768) {
         splitCardImgStyle = "width: 100px; height: auto; object-fit: contain;";
         for (let i = 0; i < 4; i++) {
             const col = document.getElementById(`splitCol${i}`);
