@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="MariaDB - votingX@211.227.73.13">
-  <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.19">
-    <root id="1">
-      <ServerVersion>10.3.23</ServerVersion>
-      <DefaultEngine>InnoDB</DefaultEngine>
-      <DefaultCasing>exact</DefaultCasing>
-    </root>
+  <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.23">
+    <root id="1"/>
     <schema id="2" parent="1" name="information_schema">
       <Collation>utf8_general_ci</Collation>
     </schema>
@@ -1027,28 +1023,18 @@
     </collation>
     <user id="328" parent="1" name="cfb">
       <Host>127.0.0.1</Host>
-      <ObjectGrants>ALL PRIVILEGES|votingX:null
-</ObjectGrants>
     </user>
     <user id="329" parent="1" name="osm">
       <Host>0.0.0.0</Host>
-      <ObjectGrants>ALL PRIVILEGES
-</ObjectGrants>
     </user>
     <user id="330" parent="1" name="root">
       <Host>%</Host>
-      <ObjectGrants>ALL PRIVILEGES
-</ObjectGrants>
     </user>
     <user id="331" parent="1" name="root">
       <Host>127.0.0.1</Host>
-      <ObjectGrants>ALL PRIVILEGES
-</ObjectGrants>
     </user>
     <user id="332" parent="1" name="root">
       <Host>localhost</Host>
-      <ObjectGrants>ALL PRIVILEGES!
-</ObjectGrants>
     </user>
     <view id="333" parent="2" name="ALL_PLUGINS">
       <System>1</System>
