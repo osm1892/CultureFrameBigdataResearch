@@ -84,14 +84,15 @@ function inflateRanking() {
                     return {
                         term: `${element.term},${element.origin.split('.').slice(-1)[0]}`,
                         value: element.value,
-                        percent: `<div class="progress"><div title="tooltip" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: ${size}%" aria-valuenow="${size}" aria-valuemin="0" aria-valuemax="100">${sum}%</div></div>`
+                        percent: `<div class="progress"><div title="tooltip" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: ${size}%" aria-valuenow="${size}" aria-valuemin="0" aria-valuemax="100">${sum}%</div></div>`,
+                        origin: element.origin,
                     };
                 });
 
             let dts2 = data
                 .arr2
                 .map((element, _) => {
-                    return {term: `${element.term},${element.origin.split('.').slice(-1)[0]}`, value: element.value, date: element.date};
+                    return {term: `${element.term},${element.origin.split('.').slice(-1)[0]}`, value: element.value, date: element.date, origin: element.origin};
                 });
 
             inflation(dts, dts2);
