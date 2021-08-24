@@ -18,38 +18,24 @@ if (empty($_GET['term'])) {
 }
 $term = $_GET['term'];
 
-function isChinese($string)
-{
-    return preg_match("/\p{Han}+/u", $string);
+if (empty($_GET['origin'])) {
+    die("no origin");
 }
-
-function isJapanese($string)
-{
-    return preg_match('/[\x{4E00}-\x{9FBF}\x{3040}-\x{309F}\x{30A0}-\x{30FF}]/u', $string);
-}
-
-function isKorean($string)
-{
-    return preg_match('/[\x{3130}-\x{318F}\x{AC00}-\x{D7AF}]/u', $string);
-}
+$origin = $_GET['origin'];
 
 if (empty($_GET['nationality'])) {
-    if (isChinese($_GET['term'])) {
-        $_GET['nationality'] = "chinese";
-    } else if (isJapanese($_GET['term'])) {
-        $_GET['nationality'] = "japanese";
-    } else if (isKorean($_GET['term'])) {
-        $_GET['nationality'] = "korean";
-    } else {
-        $_GET['nationality'] = "english";
-    }
+    $query = sprintf('select nationality from _terms where term = "%s" and origin = "%s"', $term, $origin);
+    $_GET['nationality'] = mysqli_fetch_assoc(mysqli_query($dbConnect, $query))['nationality'];
 }
+
+$wordClass = preg_split('/[.]/', $origin);
+$wordClass = end($wordClass);
 
 $nationality = rawurldecode($_GET['nationality']);
 
 $result = array("term" => $term, "nationality" => $nationality, "data" => []);
 
-$qr1 = sprintf("SELECT * FROM `%s`", $term);
+$qr1 = sprintf("SELECT * FROM `%s㉠%s`", $wordClass, $term);
 $counting = mysqli_query($dbConnect, $qr1);
 
 $i = 0;

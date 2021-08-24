@@ -20,6 +20,10 @@ $term = $data->term;
 $age = $data->age;
 $gender = $data->gender;
 $comments = $data->comment;
+$origin = $data->origin;
+
+$wordClass = preg_split('/[.]/', $origin);
+$wordClass = end($wordClass);
 
 $dbConnect = new mysqli(
     $config['database']['access_host'],
@@ -52,7 +56,7 @@ if (mysqli_query($dbConnect, $query) === false) {
 }
 
 for ($i = 0; $i < 3; $i++) {
-    $query = sprintf("SELECT %s%s FROM `%s` WHERE index_=%d;", $gender, $age, $term, $data->values[$i]);
+    $query = sprintf("SELECT %s%s FROM `%s㉠%s` WHERE index_=%d;", $gender, $age, $wordClass, $term, $data->values[$i]);
     $result = mysqli_query($dbConnect, $query);
 
     if ($result === false) {
@@ -63,8 +67,8 @@ for ($i = 0; $i < 3; $i++) {
     $fetch_data = mysqli_fetch_assoc($result);
     $vote = $fetch_data[$gender . $age];
 
-    $query = sprintf('UPDATE `%s` SET %s%s = %d WHERE index_ = %d;',
-        $term, $gender, $age, $vote + 1, $data->values[$i]);
+    $query = sprintf('UPDATE `%s㉠%s` SET %s%s = %d WHERE index_ = %d;',
+        $wordClass, $term, $gender, $age, $vote + 1, $data->values[$i]);
 
     if (mysqli_query($dbConnect, $query) === false) {
         error_log("error occurred while updating image voting result");
@@ -72,7 +76,7 @@ for ($i = 0; $i < 3; $i++) {
     }
 
     // load comment count data
-    $query = sprintf('select count(*) from `%s_comment%d`', $term, $data->values[$i]);
+    $query = sprintf('select count(*) from `%s㉠%s_comment%d`', $wordClass, $term, $data->values[$i]);
     $result = mysqli_query($dbConnect, $query);
     $commentCount = intval(mysqli_fetch_array($result)[0]);
 
@@ -82,8 +86,8 @@ for ($i = 0; $i < 3; $i++) {
     }
 
     // add new comment column
-    $query = sprintf('insert into `%s_comment%d` (index_) values (%d)',
-        $term, $data->values[$i], $commentCount);
+    $query = sprintf('insert into `%s㉠%s_comment%d` (index_) values (%d)',
+        $wordClass, $term, $data->values[$i], $commentCount);
     $result = mysqli_query($dbConnect, $query);
 
     if ($result === false) {
@@ -98,8 +102,8 @@ for ($i = 0; $i < 3; $i++) {
         }
 
         // get split image voting count
-        $query = sprintf('select %s%s_%d from `%s_split` where index_ = %d',
-            $gender, $age, $j, $term, $data->values[$i]);
+        $query = sprintf('select %s%s_%d from `%s㉠%s_split` where index_ = %d',
+            $gender, $age, $j, $wordClass, $term, $data->values[$i]);
         $result = mysqli_query($dbConnect, $query);
 
         if ($result === false) {
@@ -111,8 +115,8 @@ for ($i = 0; $i < 3; $i++) {
         $splitVotes = intval(mysqli_fetch_array($result)[0]);
 
         // add base64 encoded comment data to DB
-        $query = sprintf('update `%s_comment%d` set %s%d_%d = "%s" where index_ = %d',
-            $term, $data->values[$i], $gender, $age, $j,
+        $query = sprintf('update `%s㉠%s_comment%d` set %s%d_%d = "%s" where index_ = %d',
+            $wordClass, $term, $data->values[$i], $gender, $age, $j,
             base64_encode($comments[$i]), $commentCount);
         $result = mysqli_query($dbConnect, $query);
         if ($result === false) {
@@ -120,8 +124,8 @@ for ($i = 0; $i < 3; $i++) {
         }
 
         // update split image voting count
-        $query = sprintf("UPDATE `%s_split` SET %s%d_%d = %d where index_ = %d;",
-            $term, $gender, (int)$age, $j, $splitVotes + 1, $data->values[$i]);
+        $query = sprintf("UPDATE `%s㉠%s_split` SET %s%d_%d = %d where index_ = %d;",
+            $wordClass, $term, $gender, (int)$age, $j, $splitVotes + 1, $data->values[$i]);
 
         if (mysqli_query($dbConnect, $query) === false) {
             error_log("error occurred while updating comment data");
@@ -130,4 +134,4 @@ for ($i = 0; $i < 3; $i++) {
     }
 }
 
-echo "/output.php?term=" . $term;
+echo sprintf("/output.php?term=%s&origin=%s", $term, $origin);

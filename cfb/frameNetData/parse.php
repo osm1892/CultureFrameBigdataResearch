@@ -30,15 +30,6 @@ include_once 'simple_html_dom.php';
 // term 데이터를 받습니다.
 $term = rawurldecode($_GET['term']);
 
-// 만약 term으로 받아온 데이터가 super term이 아닌 일반 단어라면, DB에서 해당 단어에 속하는 super term을 불러옵니다.
-// 그 후, term을 super term으로 대체합니다.
-$query = sprintf('SELECT super FROM _terms WHERE term="%s";', $term);
-
-while ($result = mysqli_fetch_assoc(mysqli_query($dbConnect, $query))) {
-    $term = $result["super"];
-    break;
-}
-
 // 해당 super term에 대한 frameNet xml 파일을 불러옵니다.
 $response = file_get_contents("frame/" . $term . ".xml");
 
