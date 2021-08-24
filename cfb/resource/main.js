@@ -82,7 +82,7 @@ function inflateRanking() {
                         ? 8
                         : sum;
                     return {
-                        term: `${element.term}.${element.origin.split(',').slice(-1)[0]}`,
+                        term: `${element.term},${element.origin.split('.').slice(-1)[0]}`,
                         value: element.value,
                         percent: `<div class="progress"><div title="tooltip" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: ${size}%" aria-valuenow="${size}" aria-valuemin="0" aria-valuemax="100">${sum}%</div></div>`
                     };
@@ -91,7 +91,7 @@ function inflateRanking() {
             let dts2 = data
                 .arr2
                 .map((element, _) => {
-                    return {term: `${element.term}.${element.origin.split(',').slice(-1)[0]}`, value: element.value, date: element.date};
+                    return {term: `${element.term},${element.origin.split('.').slice(-1)[0]}`, value: element.value, date: element.date};
                 });
 
             inflation(dts, dts2);
