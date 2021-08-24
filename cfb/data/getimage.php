@@ -1,6 +1,6 @@
 <?php
 
-function removeWordFromOrigin($originRow, $wordNation, $searchWord, $dbConnect, $originWord)
+function removeWordFromOrigin($originRow, $wordNation, $searchWord, $dbConnect, $originWord): bool
 {
     if (!$originRow) {
         return false;
@@ -144,7 +144,7 @@ for ($i = 0; $i < $imageMax / 10; $i++) {
 }
 
 for ($i = 0; $i < $imageMax; $i++) {
-    $createCommentTable = sprintf("create table `%s_comment%d` (index_ int primary key", $search, $i);
+    $createCommentTable = sprintf("create table `%s㉠%s_comment%d` (index_ int primary key", $wordClass, $search, $i);
     for ($age = 0; $age < 7; $age++) {
         foreach (['male', 'female'] as $gender) {
             for ($split = 0; $split < 4; $split++) {
@@ -162,7 +162,7 @@ mysqli_query($dbConnect, $createTable);
 mysqli_query($dbConnect, $createSplitTable);
 
 for ($i = 0; $i < $imageMax; $i++) {
-    $addToTableValue = sprintf("INSERT INTO `%s㉠%s` VALUES (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d);", $wordClass, $search, $i, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    $addToTableValue = sprintf("INSERT INTO `%s㉠%s` VALUES (%d, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);", $wordClass, $search, $i);
     mysqli_query($dbConnect, $addToTableValue);
     $addToSplitTable = sprintf("INSERT INTO `%s㉠%s_split` VALUES (%d, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);", $wordClass, $search, $i);
     mysqli_query($dbConnect, $addToSplitTable);

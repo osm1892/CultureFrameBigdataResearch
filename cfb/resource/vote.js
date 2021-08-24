@@ -6,6 +6,7 @@ let data = {
     values: [],
     splitVoteds: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
     comment: ["", "", ""],
+    origin: "",
 };
 
 // 현재 선택된 이미지 번호 목록입니다.
@@ -275,6 +276,7 @@ function resetData() {
     data.values = [];
     data.splitVoteds = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
     data.comment = "";
+    data.origin = "";
 }
 
 // data 에서 몇개가 선택되었는지를 반환하는 함수입니다.

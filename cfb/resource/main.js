@@ -82,7 +82,7 @@ function inflateRanking() {
                         ? 8
                         : sum;
                     return {
-                        term: element.term,
+                        term: element.term + "(" + element.origin + ")",
                         value: element.value,
                         percent: `<div class="progress"><div title="tooltip" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: ${size}%" aria-valuenow="${size}" aria-valuemin="0" aria-valuemax="100">${sum}%</div></div>`
                     };

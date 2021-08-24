@@ -19,8 +19,8 @@ $counts = mysqli_query($dbConnect, $qr0);
 
 $sum = 0;
 while ($rst = mysqli_fetch_assoc($counts)) {
-    $ctx = $rst["_count"];
-    $sum += $ctx;
+    $voteCount = $rst["_count"];
+    $sum += $voteCount;
 }
 
 $qr1 = "SELECT * FROM _terms ORDER BY _count DESC;";
@@ -34,45 +34,45 @@ $arr = array();
 $result = array("sum" => $sum, "arr" => []);
 
 while ($rst = mysqli_fetch_assoc($counting)) {
-    $ctx = $rst["_count"];
-    $tm = $rst["term"];
+    $voteCount = $rst["_count"];
+    $term = $rst["term"];
+    $origin = $rst["origin"];
 
-    if (in_array($tm, $arr)) {
+    if (in_array($term, $arr)) {
         continue;
     }
 
-    $result["arr"][$ct] = array("term" => $tm, "value" => $ctx);
-    $arr[$ct] = $tm;
+    $result["arr"][$ct] = array("term" => $term, "value" => $voteCount, "origin" => $origin);
+    $arr[$ct] = $term;
 
     $ct++;
     if ($ct > 9) break;
 }
 
-$result["arr"][$ct] = array("term" => "dummy", "value" => 0);
+$result["arr"][$ct] = array("term" => "dummy", "value" => 0, "origin" => "dummy");
 $result["arr2"] = [];
 
 $ct = 0;
 $arr = array();
 
 while ($rst = mysqli_fetch_assoc($counting2)) {
-    $ctx = $rst["_date"];
+    $voteCount = $rst["_date"];
     $rtx = $rst["_count"];
-    $tm = $rst["term"];
+    $term = $rst["term"];
+    $origin = $rst["origin"];
 
-    if (in_array($tm, $arr)) {
+    if (in_array($term, $arr)) {
         continue;
     }
 
-    $result["arr2"][$ct] = array("term" => $tm, "date" => $ctx, "value" => $rtx);
-    $arr[] = $tm;
+    $result["arr2"][$ct] = array("term" => $term, "date" => $voteCount, "value" => $rtx, "origin" => $origin);
+    $arr[] = $term;
 
     $ct++;
     if ($ct > 9) break;
 }
 
-$result["arr2"][$ct] = array("term" => "dummy", "date" => "0000-00-00 00:00:00", "value" => 0);
+$result["arr2"][$ct] = array("term" => "dummy", "date" => "0000-00-00 00:00:00", "value" => 0, "origin" => "dummy");
 
 
 print(json_encode($result, JSON_UNESCAPED_UNICODE));
-
-?>

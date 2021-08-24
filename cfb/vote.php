@@ -8,12 +8,19 @@ if ($dbConnect->connect_errno) {
 }
 
 if (empty($_GET['word'])) {
-    $_GET['word'] = "";
+    print("parameter empty");
+    return;
 }
 $word = rawurldecode($_GET['word']);
 
+if (empty($_GET['origin'])) {
+    print("parameter empty");
+    return;
+}
+$origin = rawurldecode($_GET['origin']);
+
 $GLOBALS['exist'] = false;
-$qr = "SELECT term FROM _terms WHERE term=\"" . $word . "\";";
+$qr = "SELECT term FROM _terms WHERE term=\"{$word}\" and origin = \"{$origin}\"";
 
 if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
     $GLOBALS['exist'] = true;
@@ -54,7 +61,8 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
                     .reload()
                 return;
             }
-            data.term = "<?php echo $word;?>"
+            data.term = "<?php echo $word;?>";
+            data.origin = "<?php echo $origin; ?>";
             let spin = $('#spin');
             if (spin != null) {
                 spin.hide();

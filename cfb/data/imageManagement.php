@@ -65,7 +65,7 @@ foreach ($data as $my) {
                     mysqli_query($dbConnect, $query);
                     $query = sprintf("drop table `%s㉠%s_split`", $wordClass, $ev);
                     mysqli_query($dbConnect, $query);
-                    if (mysqli_query($dbConnect, sprintf('select * from _terms where term = "%s"', $ev))->num_rows <= 1) {
+                    if (mysqli_query($dbConnect, sprintf('select * from _terms where term = "%s"', $ev))->num_rows == 0) {
                         $query = sprintf("drop table `%s_image_meta`", $ev);
                         mysqli_query($dbConnect, $query);
                         exec(sprintf("rm -rf photo/%s", rawurlencode($ev)));
@@ -94,7 +94,7 @@ foreach ($data as $my) {
                     mysqli_query($dbConnect, $query);
                     $query = sprintf("drop table `%s㉠%s_split`", $wordClass, $kv);
                     mysqli_query($dbConnect, $query);
-                    if (mysqli_query($dbConnect, sprintf('select * from _terms where term = "%s"', $kv))->num_rows <= 1) {
+                    if (mysqli_query($dbConnect, sprintf('select * from _terms where term = "%s"', $kv))->num_rows == 0) {
                         $query = sprintf("drop table `%s_image_meta`", $kv);
                         mysqli_query($dbConnect, $query);
                         exec(sprintf("rm -rf photo/%s", rawurlencode($kv)));
@@ -119,19 +119,19 @@ foreach ($data as $my) {
                     $query = sprintf('delete from _terms where term = "%s" and origin = "%s"', $cv, $origin);
                     mysqli_query($dbConnect, $query);
 
-                    $query = sprintf("drop table `%s`", $cv);
+                    $query = sprintf("drop table `%s㉠%s`", $wordClass, $cv);
                     mysqli_query($dbConnect, $query);
-                    $query = sprintf("drop table `%s_split`", $cv);
+                    $query = sprintf("drop table `%s㉠%s_split`", $wordClass, $cv);
                     mysqli_query($dbConnect, $query);
-                    if (mysqli_query($dbConnect, sprintf('select * from _terms where term = "%s"', $cv))->num_rows <= 1) {
+                    if (mysqli_query($dbConnect, sprintf('select * from _terms where term = "%s"', $cv))->num_rows == 0) {
                         $query = sprintf("drop table `%s_image_meta`", $cv);
                         mysqli_query($dbConnect, $query);
+                        exec(sprintf("rm -rf photo/%s", rawurlencode($cv)));
                     }
                     for ($i = 0; $i < 50; $i++) {
                         $query = sprintf("drop table `%s㉠%s_comment%d`", $wordClass, $cv, $i);
                         mysqli_query($dbConnect, $query);
                     }
-                    exec(sprintf("rm -rf photo/%s", rawurlencode($cv)));
                 }
             }
             /************/
@@ -152,15 +152,15 @@ foreach ($data as $my) {
                     mysqli_query($dbConnect, $query);
                     $query = sprintf("drop table `%s㉠%s_split`", $wordClass, $jv);
                     mysqli_query($dbConnect, $query);
-                    if (mysqli_query($dbConnect, sprintf('select * from _terms where term = "%s"', $jv))->num_rows <= 1) {
+                    if (mysqli_query($dbConnect, sprintf('select * from _terms where term = "%s"', $jv))->num_rows == 0) {
                         $query = sprintf("drop table `%s_image_meta`", $jv);
                         mysqli_query($dbConnect, $query);
+                        exec(sprintf("rm -rf photo/%s", rawurlencode($jv)));
                     }
                     for ($i = 0; $i < 50; $i++) {
                         $query = sprintf("drop table `%s㉠%s_comment%d`", $wordClass, $jv, $i);
                         mysqli_query($dbConnect, $query);
                     }
-                    exec(sprintf("rm -rf photo/%s", rawurlencode($jv)));
                 }
             }
             $flag = true;
@@ -206,9 +206,8 @@ foreach ($data as $my) {
 
 print(json_encode($jsonResult, JSON_UNESCAPED_UNICODE));
 
-$qch5 = "DELETE FROM _terms WHERE term=\"null\";";
+$qch5 = 'DELETE FROM _terms WHERE term="null";';
 mysqli_query($dbConnect, $qch5);
 
 $qch6 = 'DELETE FROM _origin WHERE english="null" AND korean="null" AND chinese="null" AND japanese="null";';
 mysqli_query($dbConnect, $qch6);
-?>
