@@ -58,7 +58,7 @@ foreach ($data as $my) {
             }
             foreach ($e_ as $ev) {
                 if (!in_array($ev, $english_ex)) {
-                    $query = sprintf('delete from _terms where term = "%s"', $ev);
+                    $query = sprintf('delete from _terms where term = "%s" and origin = "%s"', $ev, $origin);
                     mysqli_query($dbConnect, $query);
 
                     $query = sprintf("drop table `%s㉠%s`", $wordClass, $ev);
@@ -68,12 +68,12 @@ foreach ($data as $my) {
                     if (mysqli_query($dbConnect, sprintf('select * from _terms where term = "%s"', $ev))->num_rows <= 1) {
                         $query = sprintf("drop table `%s_image_meta`", $ev);
                         mysqli_query($dbConnect, $query);
+                        exec(sprintf("rm -rf photo/%s", rawurlencode($ev)));
                     }
                     for ($i = 0; $i < 50; $i++) {
                         $query = sprintf("drop table `%s㉠%s_comment%d`", $wordClass, $ev, $i);
                         mysqli_query($dbConnect, $query);
                     }
-                    exec(sprintf("rm -rf photo/%s", rawurlencode($ev)));
                 }
             }
             /************/
@@ -87,7 +87,7 @@ foreach ($data as $my) {
             }
             foreach ($k_ as $kv) {
                 if (!in_array($kv, $korean_ex)) {
-                    $query = sprintf('delete from _terms where term = "%s"', $kv);
+                    $query = sprintf('delete from _terms where term = "%s" and origin = "%s"', $kv, $origin);
                     mysqli_query($dbConnect, $query);
 
                     $query = sprintf("drop table `%s㉠%s`", $wordClass, $kv);
@@ -97,12 +97,12 @@ foreach ($data as $my) {
                     if (mysqli_query($dbConnect, sprintf('select * from _terms where term = "%s"', $kv))->num_rows <= 1) {
                         $query = sprintf("drop table `%s_image_meta`", $kv);
                         mysqli_query($dbConnect, $query);
+                        exec(sprintf("rm -rf photo/%s", rawurlencode($kv)));
                     }
                     for ($i = 0; $i < 50; $i++) {
-                        $query = sprintf("drop table `%s_comment%d`", $kv, $i);
+                        $query = sprintf("drop table `%s㉠%s_comment%d`", $wordClass, $kv, $i);
                         mysqli_query($dbConnect, $query);
                     }
-                    exec(sprintf("rm -rf photo/%s", rawurlencode($kv)));
                 }
             }
             /************/
@@ -116,7 +116,7 @@ foreach ($data as $my) {
             }
             foreach ($c_ as $cv) {
                 if (!in_array($cv, $chinese_ex)) {
-                    $query = sprintf('delete from _terms where term = "%s"', $cv);
+                    $query = sprintf('delete from _terms where term = "%s" and origin = "%s"', $cv, $origin);
                     mysqli_query($dbConnect, $query);
 
                     $query = sprintf("drop table `%s`", $cv);
@@ -128,7 +128,7 @@ foreach ($data as $my) {
                         mysqli_query($dbConnect, $query);
                     }
                     for ($i = 0; $i < 50; $i++) {
-                        $query = sprintf("drop table `%s_comment%d`", $cv, $i);
+                        $query = sprintf("drop table `%s㉠%s_comment%d`", $wordClass, $cv, $i);
                         mysqli_query($dbConnect, $query);
                     }
                     exec(sprintf("rm -rf photo/%s", rawurlencode($cv)));
@@ -148,16 +148,16 @@ foreach ($data as $my) {
                     $query = sprintf('delete from _terms where term = "%s"', $jv);
                     mysqli_query($dbConnect, $query);
 
-                    $query = sprintf("drop table `%s`", $jv);
+                    $query = sprintf("drop table `%s㉠%s`", $wordClass, $jv);
                     mysqli_query($dbConnect, $query);
-                    $query = sprintf("drop table `%s_split`", $jv);
+                    $query = sprintf("drop table `%s㉠%s_split`", $wordClass, $jv);
                     mysqli_query($dbConnect, $query);
                     if (mysqli_query($dbConnect, sprintf('select * from _terms where term = "%s"', $jv))->num_rows <= 1) {
                         $query = sprintf("drop table `%s_image_meta`", $jv);
                         mysqli_query($dbConnect, $query);
                     }
                     for ($i = 0; $i < 50; $i++) {
-                        $query = sprintf("drop table `%s_comment%d`", $jv, $i);
+                        $query = sprintf("drop table `%s㉠%s_comment%d`", $wordClass, $jv, $i);
                         mysqli_query($dbConnect, $query);
                     }
                     exec(sprintf("rm -rf photo/%s", rawurlencode($jv)));

@@ -110,7 +110,7 @@ if ($pre_exist == false) {
     $query = sprintf('create table `%s_image_meta` (index_ int primary key, title text, snippet text)', $search);
     mysqli_query($dbConnect, $query);
 
-    for ($i = 0; $i < 50; $i++) {
+    for ($i = 0; $i < $imageMax; $i++) {
         $query = sprintf('insert into `%s_image_meta`(index_) values (%d)', $search, $i);
         mysqli_query($dbConnect, $query);
     }
