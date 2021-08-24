@@ -1,4 +1,5 @@
 var TERM = "";
+var ORIGIN = "";
 var m = [];
 var f = [];
 var sm = [];
@@ -6,17 +7,18 @@ var m_c = [];
 var f_c = [];
 var m_c_f = 0;
 
-function setUp(term) {
+function setUp(term, origin) {
     if (term.trim() == "") {
         alert("잘못된 접근입니다.")
         return;
     }
 
     TERM = term;
+    ORIGIN = origin;
 
     $('#hcls').text(TERM);
 
-    fetch(`/database/ranking.php?term=${encodeURIComponent(term)}`)
+    fetch(`/database/ranking.php?term=${encodeURIComponent(term)}&origin=${origin}`)
         .then(
             res => {
                 if (res.ok) {

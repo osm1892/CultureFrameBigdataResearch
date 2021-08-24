@@ -151,19 +151,19 @@ if ($GLOBALS['exist']) {
 
             $('#nationality').change(() => {
                 setSelect($("#nationality option:selected").val(), null);
-                setUp($("#terms option:selected").val());
+                setUp($("#terms option:selected").val(), $("#origin option:selected").val());
             });
             $('#terms').change(() => {
-                setUp($("#terms option:selected").val());
+                setUp($("#terms option:selected").val(), $("#origin option:selected").val());
             });
             $('#gender').change(() => {
                 setRanking()
             });
             $('#age').change(() => {
-                setUp($("#terms option:selected").val());
+                setUp($("#terms option:selected").val(), $("#origin option:selected").val());
             });
 
-            setUp($("#terms option:selected").val());
+            setUp($("#terms option:selected").val(), $("#origin option:selected").val());
             $('#prescript').remove();
         });
     </script>
