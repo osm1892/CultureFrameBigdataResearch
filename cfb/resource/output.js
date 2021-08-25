@@ -18,7 +18,7 @@ function setUp(term, origin) {
 
     $('#hcls').text(TERM);
 
-    fetch(`/database/ranking.php?term=${encodeURIComponent(term)}&origin=${origin}`)
+    fetch(`/database/ranking.php?term=${encodeURIComponent(term)}&origin=${encodeURIComponent(origin)}`)
         .then(
             res => {
                 if (res.ok) {

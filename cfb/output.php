@@ -45,7 +45,7 @@ if (empty($_GET['index'])) {
 $indexx = $_GET['index'];
 
 $origins = array();
-$myUrl = sprintf("output.php?nationality=%s&term=%s&index=", $_GET['nationality'], rawurlencode($_GET['term']));
+$myUrl = sprintf("output.php?nationality=%s&term=%s&origin=%s&index=", $_GET['nationality'], rawurlencode($_GET['term']), $_GET['origin']);
 $cntt = 0;
 
 $aaa = mysqli_query($dbConnect, $qr);
