@@ -21,10 +21,10 @@ $term = $_GET['term'];
 if (empty($_GET['origin'])) {
     die("no origin");
 }
-$origin = $_GET['origin'];
+$origin = urldecode($_GET['origin']);
 
 if (empty($_GET['nationality'])) {
-    $query = sprintf('select nationality from _terms where term = "%s" and origin = "%s"', $term, $origin);
+    $query = "select nationality from _terms where term = '{$term}' and origin = '{$origin}'";
     $_GET['nationality'] = mysqli_fetch_assoc(mysqli_query($dbConnect, $query))['nationality'];
 }
 
@@ -35,7 +35,7 @@ $nationality = rawurldecode($_GET['nationality']);
 
 $result = array("term" => $term, "nationality" => $nationality, "data" => []);
 
-$qr1 = sprintf("SELECT * FROM `%s㉠%s`", $wordClass, $term);
+$qr1 = "SELECT * FROM `{$wordClass}㉠{$term}`";
 $counting = mysqli_query($dbConnect, $qr1);
 
 $i = 0;

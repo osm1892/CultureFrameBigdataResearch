@@ -1,14 +1,14 @@
-var TERM = "";
-var ORIGIN = "";
-var male = [];
-var female = [];
-var sm = [];
-var m_c = [];
-var f_c = [];
-var m_c_f = 0;
+let TERM = "";
+let ORIGIN = "";
+let male = [];
+let female = [];
+let sm = [];
+let m_c = [];
+let f_c = [];
+let m_c_f = 0;
 
 function setUp(term, origin) {
-    if (term.trim() == "") {
+    if (term.trim() === "") {
         alert("잘못된 접근입니다.")
         return;
     }
@@ -141,7 +141,6 @@ function doit(data) {
         for (let v = 0; v <= 6; v++) {
             mx += e.male[v] + e.female[v];
             m_c_f += e.male[v] + e.female[v];
-            ;
         }
 
         sm.push({index: e.index, dt: mx});
@@ -176,11 +175,11 @@ function setRanking() {
         hideViews(`#age`, `#age-div`);
     }
 
-    let v = gender == 'male' ? male : female;
-    let v_c = gender == 'male' ? m_c : f_c;
+    let v = gender === 'male' ? male : female;
+    let v_c = gender === 'male' ? m_c : f_c;
 
     for (let z = -1; z < 6; z++) {
-        let ia = z != -1;
+        let ia = z !== -1;
         let sum_m = ia ? v_c[z] : m_c_f;
         for (let c = 1; c <= 10; c++) {
             let src = "";
@@ -192,7 +191,7 @@ function setRanking() {
             let gcale = `#gcmale_${c}_${z}`;
             let VZ = ia ? v[z] : sm;
 
-            if (VZ[c - 1].dt != 0) {
+            if (VZ[c - 1].dt !== 0) {
                 // 브라우저에서 URL을 자체적으로 디코딩 하기 때문에, 인코딩을 두번 해주어야 올바른 파일 경로를 참조합니다.
                 src = `data/photo/${encodeURIComponent(encodeURIComponent(TERM))}/${VZ[c - 1].index}.jpg`;
                 $(ale).attr("src", src);
@@ -210,7 +209,7 @@ function setRanking() {
 
             if (mobile) {
                 hideViews(gcale, cale);
-                if (section == z || (section == 7 && z == -1)) {
+                if (section === z || (section === 7 && z === -1)) {
                     showViews(tds);
                     $(tds).attr("style", 'width:100%;padding:3px');
                     $(tds).attr("class", '');
@@ -223,7 +222,7 @@ function setRanking() {
                 $(tds).attr("style", '');
                 $(ale).click(() => {
                     $('#modal_image').attr("src", src)
-                    $("#myModal").modal();
+                    $("#myModal").modal()
                 });
             }
         }

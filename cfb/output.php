@@ -35,7 +35,7 @@ if (empty($_GET['nationality'])) {
     }
 }
 
-$qr = sprintf('SELECT origin,nationality FROM _terms WHERE term="%s";', $_GET['term']);
+$qr = "SELECT origin,nationality FROM _terms WHERE term='{$_GET['term']}'";
 $GLOBALS['exist'] = false;
 
 if (empty($_GET['index'])) {
@@ -61,7 +61,7 @@ while ($rst = mysqli_fetch_assoc($aaa)) {
 }
 
 if ($GLOBALS['exist']) {
-    $qr = sprintf('SELECT * FROM _origin WHERE term="%s";', $GLOBALS["origin"]);
+    $qr = "SELECT * FROM _origin WHERE term='{$GLOBALS["origin"]}'";
     while ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
         $GLOBALS['english'] = $rst["english"];
         $GLOBALS['korean'] = $rst["korean"];
@@ -106,7 +106,7 @@ if ($GLOBALS['exist']) {
                 .toLowerCase();
 
             // 인터넷익스플로러 배제 포함시키는게 사실상 새로 짜는것과 같음
-            if ((navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1)) {
+            if ((navigator.appName === 'Netscape' && navigator.userAgent.search('Trident') !== -1) || (agent.indexOf("msie") !== -1)) {
                 $('#modalcontext').empty();
                 $('#cancel').hide();
                 $('#submit').hide();
@@ -128,7 +128,7 @@ if ($GLOBALS['exist']) {
 
             }
 
-            if ("<?php if ($GLOBALS['exist']) echo 'true'; ?>" != "true") {
+            if ("<?php if ($GLOBALS['exist']) echo 'true'; ?>" !== "true") {
                 alert('존재하지 않는 단어입니다.');
                 window
                     .history
@@ -151,19 +151,19 @@ if ($GLOBALS['exist']) {
 
             $('#nationality').change(() => {
                 setSelect($("#nationality option:selected").val(), null);
-                setUp($("#terms option:selected").val(), $("#origin option:selected").val());
+                setUp($("#terms option:selected").val(), $("#origin option:selected")[0].text);
             });
             $('#terms').change(() => {
-                setUp($("#terms option:selected").val(), $("#origin option:selected").val());
+                setUp($("#terms option:selected").val(), $("#origin option:selected")[0].text);
             });
             $('#gender').change(() => {
                 setRanking()
             });
             $('#age').change(() => {
-                setUp($("#terms option:selected").val(), $("#origin option:selected").val());
+                setUp($("#terms option:selected").val(), $("#origin option:selected")[0].text);
             });
 
-            setUp($("#terms option:selected").val(), $("#origin option:selected").val());
+            setUp($("#terms option:selected").val(), $("#origin option:selected")[0].text);
             $('#prescript').remove();
         });
     </script>
