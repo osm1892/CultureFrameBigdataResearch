@@ -1,7 +1,7 @@
 var TERM = "";
 var ORIGIN = "";
-var m = [];
-var f = [];
+var male = [];
+var female = [];
 var sm = [];
 var m_c = [];
 var f_c = [];
@@ -36,6 +36,7 @@ function setUp(term, origin) {
             doit(data);
         })
         .catch(error => {
+            console.error(error);
             alert('존재하지 않는 단어입니다.');
             //window.location.href = "index.html";
         });
@@ -76,7 +77,7 @@ function setSelect(nationality, trm) {
 }
 
 function doit(data) {
-    m = [
+    male = [
         [],
         [],
         [],
@@ -87,7 +88,7 @@ function doit(data) {
     ];
     sm = [];
     m_c = [0, 0, 0, 0, 0, 0, 0];
-    f = [
+    female = [
         [],
         [],
         [],
@@ -114,7 +115,7 @@ function doit(data) {
     for (let c = 0; c < 6; c++) {
         let m_t = 0;
         let f_t = 0;
-        m[c] = arr.map((e, _) => {
+        male[c] = arr.map((e, _) => {
             m_t += e.male[c];
             return {
                 index: e.index,
@@ -122,7 +123,7 @@ function doit(data) {
             };
         }).sort(sortMethod).slice(0, topWhat);
 
-        f[c] = arr.map((e, _) => {
+        female[c] = arr.map((e, _) => {
             f_t += e.female[c];
             return {
                 index: e.index,
@@ -148,8 +149,8 @@ function doit(data) {
 
     sm = sm.sort(sortMethod).slice(0, topWhat);
 
-    console.log(m);
-    console.log(f);
+    console.log(male);
+    console.log(female);
     console.log(sm);
     setRanking();
 }
@@ -175,7 +176,7 @@ function setRanking() {
         hideViews(`#age`, `#age-div`);
     }
 
-    let v = gender == 'male' ? m : f;
+    let v = gender == 'male' ? male : female;
     let v_c = gender == 'male' ? m_c : f_c;
 
     for (let z = -1; z < 6; z++) {
