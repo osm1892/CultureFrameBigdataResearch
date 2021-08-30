@@ -34,21 +34,22 @@ $dbConnect = new mysqli(
 );
 if ($dbConnect->connect_errno) die("mysql error");
 
-$query = sprintf('SELECT _count FROM _terms WHERE term="%s";', $term);
+$query = sprintf('SELECT _count FROM _terms WHERE term="%s" and origin="%s"', $term, $origin);
 $result = mysqli_query($dbConnect, $query);
 $counting = 0;
 
-if ($result === false) {
+$fetch_data = mysqli_fetch_assoc($result);
+
+if (!$fetch_data) {
     error_log("error occurred while loading count");
     return;
 }
 
-$fetch_data = mysqli_fetch_assoc($result);
 $counting = $fetch_data["_count"];
 
 $tDate = date("Y-m-d H:i:s", time());
-$query = sprintf('UPDATE _terms SET _count =%d, _date ="%s" WHERE term = "%s";',
-    $counting + 1, $tDate, $term);
+$query = sprintf('UPDATE _terms SET _count =%d, _date ="%s" WHERE term = "%s" and origin = "%s"',
+    $counting + 1, $tDate, $term, $origin);
 
 if (mysqli_query($dbConnect, $query) === false) {
     error_log("error occurred while updating vote count and time");
@@ -56,10 +57,10 @@ if (mysqli_query($dbConnect, $query) === false) {
 }
 
 for ($i = 0; $i < 3; $i++) {
-    $query = sprintf("SELECT %s%s FROM `%s㉠%s` WHERE index_=%d;", $gender, $age, $wordClass, $term, $data->values[$i]);
+    $query = sprintf("SELECT %s%s FROM `%s㉠%s` WHERE index_=%d", $gender, $age, $wordClass, $term, $data->values[$i]);
     $result = mysqli_query($dbConnect, $query);
 
-    if ($result === false) {
+    if (!$result) {
         error_log("error occurred while loading image voting count data");
         return;
     }
@@ -67,10 +68,10 @@ for ($i = 0; $i < 3; $i++) {
     $fetch_data = mysqli_fetch_assoc($result);
     $vote = $fetch_data[$gender . $age];
 
-    $query = sprintf('UPDATE `%s㉠%s` SET %s%s = %d WHERE index_ = %d;',
+    $query = sprintf('UPDATE `%s㉠%s` SET %s%s = %d WHERE index_ = %d',
         $wordClass, $term, $gender, $age, $vote + 1, $data->values[$i]);
 
-    if (mysqli_query($dbConnect, $query) === false) {
+    if (!mysqli_query($dbConnect, $query)) {
         error_log("error occurred while updating image voting result");
         return;
     }
@@ -124,7 +125,7 @@ for ($i = 0; $i < 3; $i++) {
         }
 
         // update split image voting count
-        $query = sprintf("UPDATE `%s㉠%s_split` SET %s%d_%d = %d where index_ = %d;",
+        $query = sprintf("UPDATE `%s㉠%s_split` SET %s%d_%d = %d where index_ = %d",
             $wordClass, $term, $gender, (int)$age, $j, $splitVotes + 1, $data->values[$i]);
 
         if (mysqli_query($dbConnect, $query) === false) {

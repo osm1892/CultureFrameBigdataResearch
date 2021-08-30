@@ -8,21 +8,23 @@ if ($dbConnect->connect_errno) {
 }
 
 if (empty($_GET['word'])) {
-    print("parameter empty");
+    print("word empty");
     return;
 }
 $word = rawurldecode($_GET['word']);
 
 if (empty($_GET['origin'])) {
-    print("parameter empty");
-    return;
+    $query = "select origin from _terms where term = '{$word}'";
+    $_GET['origin'] = rawurlencode(mysqli_fetch_assoc(mysqli_query($dbConnect, $query))['origin']);
 }
 $origin = rawurldecode($_GET['origin']);
 
 $GLOBALS['exist'] = false;
-$qr = "SELECT term FROM _terms WHERE term=\"{$word}\" and origin = \"{$origin}\"";
+$qr = "SELECT * FROM _terms WHERE term='{$word}'";
 
-if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
+$terms = mysqli_fetch_all(mysqli_query($dbConnect, $qr), MYSQLI_ASSOC);
+
+if ($terms) {
     $GLOBALS['exist'] = true;
 }
 
@@ -135,20 +137,33 @@ if ($rst = mysqli_fetch_assoc(mysqli_query($dbConnect, $qr))) {
                             <?php
                             if (!empty($word)) {
                                 if (is_dir('data/photo/' . rawurlencode($word)) && $GLOBALS['exist']) {
-                                    print('
-<p style="display: inline-block;font-size:xx-large;"><strong class="str">★</strong> &nbsp' . $word . '&nbsp <strong class="str">★</strong></p>
-<p style="margin-top:10px;color:red; font-size:x-large;">해당 단어의 의미를 가장 잘 표현하는 이미지 3개를 선택해주세요!</p>
-<p style="color:green; font-size:x-large;">Choose 3 images which best express the meaning of the word!</p>
-<p style="color:blue; font-size:x-large;">該当する単語の意味を一番よく表しているイメージを3つお選びください!</p>
-<p style="color:purple; font-size:x-large;">请选择最能表达相应单词含义的3个图片!</p>
-<div style="padding-top:20px;float:center;display: inline-block;">
-    <strong style="float:left;font-size:xx-large;" id="selectedCnt">0</strong>
-    <h1 style="float:left;font-size:xx-large;" > / 3 items Selected.</h1>
+                                    /*
+                                    print("<select class='form-control' id='origin' style='width:130px;display:inline-block;' onchange='location = this.value;'>");
+                                    foreach ($terms as $term) {
+                                        $selected = "";
+                                        if ($term['origin'] === $origin) {
+                                            $selected = "selected";
+                                        }
+                                        echo "<option value='vote.php?holder=!&word={$word}&origin={$term['origin']}' {$selected}>{$term['origin']}</option>";
+                                    }
+                                    print("</select>\n<br>");
+                                    미래에 쓸 부분
+                                    */
+                                    print("
+<p style='display: inline-block;font-size:xx-large;'><strong class='str'>★</strong> &nbsp{$word}&nbsp <strong class='str'>★</strong></p>
+<br>
+<p style='margin-top:10px;color:red; font-size:x-large;'>해당 단어의 의미를 가장 잘 표현하는 이미지 3개를 선택해주세요!</p>
+<p style='color:green; font-size:x-large;'>Choose 3 images which best express the meaning of the word!</p>
+<p style='color:blue; font-size:x-large;'>該当する単語の意味を一番よく表しているイメージを3つお選びください!</p>
+<p style='color:purple; font-size:x-large;'>请选择最能表达相应单词含义的3个图片!</p>
+<div style='padding-top:20px;float:center;display: inline-block;'>
+    <strong style='float:left;font-size:xx-large;' id='selectedCnt'>0</strong>
+    <h1 style='float:left;font-size:xx-large;' > / 3 items Selected.</h1>
 </div>
-<div style="width:100%;height:auto;">
-    <button style="float:right;" type="button" id="submit" class="btn btn-info btn-lg" data-toggle="modal" data-backdrop="static" data-keyboard="false" onclick="alert(\'Please choose three.\')" >Submit</button>
+<div style='width:100%;height:auto;'>
+    <button style='float:right;' type='button' id='submit' class='btn btn-info btn-lg' data-toggle='modal' data-backdrop='static' data-keyboard='false' onclick='alert('Please choose three.')' >Submit</button>
 </div>
-                                                ');
+                                                ");
                                 }
                             }
                             ?>
