@@ -92,7 +92,12 @@ function inflateRanking() {
             let dts2 = data
                 .arr2
                 .map((element, _) => {
-                    return {term: `${element.term},${element.origin.split('.').slice(-1)[0]}`, value: element.value, date: element.date, origin: element.origin};
+                    return {
+                        term: `${element.term},${element.origin.split('.').slice(-1)[0]}`,
+                        value: element.value,
+                        date: element.date,
+                        origin: element.origin
+                    };
                 });
 
             inflation(dts, dts2);

@@ -11,15 +11,18 @@ if (empty($_GET['term'])) {
 }
 $_GET['term'] = rawurldecode($_GET['term']);
 
-function isChinese($string) {
+function isChinese($string)
+{
     return preg_match("/\p{Han}+/u", $string);
 }
 
-function isJapanese($string) {
+function isJapanese($string)
+{
     return preg_match('/[\x{4E00}-\x{9FBF}\x{3040}-\x{309F}\x{30A0}-\x{30FF}]/u', $string);
 }
 
-function isKorean($string) {
+function isKorean($string)
+{
     return preg_match('/[\x{3130}-\x{318F}\x{AC00}-\x{D7AF}]/u', $string);
 }
 
@@ -78,20 +81,20 @@ if ($GLOBALS['exist']) {
 <head>
     <meta charset="utf-8">
     <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
     <title>문화프레임빅데이터연구소</title>
     <link
-        rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/resource/output.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script
-        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script id="prescript" type="text/javascript">
         var localData = {
             english: "<?php echo $GLOBALS['english'];?>".split(","),
@@ -178,11 +181,11 @@ if ($GLOBALS['exist']) {
     </style>
     <div class="navbar navbar-light box-shadow" style="background-color: #b4b4b4;">
         <div
-            class="container d-flex justify-content-between"
-            style="margin-top:-10px;margin-bottom:-10px">
+                class="container d-flex justify-content-between"
+                style="margin-top:-10px;margin-bottom:-10px">
             <a
-                href="/index.html"
-                class="navbar-brand d-flex align-items-center no-drag">
+                    href="/index.html"
+                    class="navbar-brand d-flex align-items-center no-drag">
                 <img height="70px" src="/resource/main.gif">
             </a>
             <div class="row">
@@ -190,12 +193,12 @@ if ($GLOBALS['exist']) {
                     <form id="voteSubmit" action="/vote.php" method="get">
                         <input style="display:none;" type="text" calss="btn" name="holder" value="!">
                         <input
-                            id="voteInput"
-                            style="text-align:left;background-color:white;width:auto;display:inline-block;"
-                            type="text"
-                            class="form-control"
-                            name="word"
-                            placeholder="Enter a word to vote">
+                                id="voteInput"
+                                style="text-align:left;background-color:white;width:auto;display:inline-block;"
+                                type="text"
+                                class="form-control"
+                                name="word"
+                                placeholder="Enter a word to vote">
                         <button type="submit" class="btn btn-info" style="margin-bottom:5px">Search</button>
                     </form>
                 </div>
@@ -203,12 +206,12 @@ if ($GLOBALS['exist']) {
                     <form id="outputSubmit" action="/output.php" method="get">
                         <input style="display:none;" type="text" name="nationality" value="korea">
                         <input
-                            id="outputInput"
-                            style="text-align:left;background-color:white;width:auto;display:inline-block"
-                            type="text"
-                            class="form-control"
-                            name="term"
-                            placeholder="Enter a word for result">
+                                id="outputInput"
+                                style="text-align:left;background-color:white;width:auto;display:inline-block"
+                                type="text"
+                                class="form-control"
+                                name="term"
+                                placeholder="Enter a word for result">
                         <button type="submit" class="btn btn-info" style="margin-bottom:5px">Search</button>
                     </form>
                 </div>
@@ -219,18 +222,18 @@ if ($GLOBALS['exist']) {
 
 <main role="main">
     <section
-        class="jumbotron text-center"
-        style="background-color:white;margin:0px;padding:10px;padding-top:30px">
+            class="jumbotron text-center"
+            style="background-color:white;margin:0px;padding:10px;padding-top:30px">
         <div class="container">
             <div class="card bg-light mb-3">
                 <div class="card-body" style="padding:0px">
                     <div class="card-header">
                         <p style="font-size:x-large">Vote Result Of "<?php print($_GET["term"]); ?>"</p>
                         <select
-                            class="form-control"
-                            id="origin"
-                            style="width:130px;display:inline-block;"
-                            onchange="location = this.value;">
+                                class="form-control"
+                                id="origin"
+                                style="width:130px;display:inline-block;"
+                                onchange="location = this.value;">
                             <?php
                             foreach ($origins as $key => $value) {
                                 $tmp = "";
@@ -246,9 +249,9 @@ if ($GLOBALS['exist']) {
                         <div class="col-md-4" style="padding: 30px;">
                             <h2 class="no-drag" for="nationality">Nationality</h2>
                             <select
-                                class="form-control"
-                                id="nationality"
-                                style="padding-right:30px;padding-left:30px;margin-top:20px">
+                                    class="form-control"
+                                    id="nationality"
+                                    style="padding-right:30px;padding-left:30px;margin-top:20px">
                                 <option value="english">english</option>
                                 <option value="korean">한국</option>
                                 <option value="chinese">中國</option>
@@ -258,16 +261,16 @@ if ($GLOBALS['exist']) {
                         <div class="col-md-4" style="padding: 30px;">
                             <h2 class="no-drag" for="nationality">Word</h2>
                             <select
-                                class="form-control"
-                                id="terms"
-                                style="padding-right:30px;padding-left:30px;margin-top:20px"></select>
+                                    class="form-control"
+                                    id="terms"
+                                    style="padding-right:30px;padding-left:30px;margin-top:20px"></select>
                         </div>
                         <div class="col-md-4" style="padding: 30px;">
                             <h2 class="no-drag" for="gender">Gender</h2>
                             <select
-                                class="form-control"
-                                id="gender"
-                                style="padding-right:30px;padding-left:30px;margin-top:20px">
+                                    class="form-control"
+                                    id="gender"
+                                    style="padding-right:30px;padding-left:30px;margin-top:20px">
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </select>
@@ -276,9 +279,9 @@ if ($GLOBALS['exist']) {
                         <div id='age-div' class="col-md-4" style="display: none;padding: 30px;">
                             <h2 class=" no-drag" for="gender">Age</h2>
                             <select
-                                class="form-control"
-                                id="age"
-                                style="padding-right:30px;padding-left:30px;margin-top:20px">
+                                    class="form-control"
+                                    id="age"
+                                    style="padding-right:30px;padding-left:30px;margin-top:20px">
                                 <option value="0">0-19</option>
                                 <option value="1">20-29</option>
                                 <option value="2">30-39</option>
@@ -296,8 +299,8 @@ if ($GLOBALS['exist']) {
     </section>
 
     <section
-        class="jumbotron text-center"
-        style="background-color:white;margin:0px;padding:10px">
+            class="jumbotron text-center"
+            style="background-color:white;margin:0px;padding:10px">
         <div class="container">
             <div class="center-block">
                 <div class="card bg-light mb-3">
