@@ -68,13 +68,13 @@ $_GET['word'] = ucfirst($_GET['word']);
 
 <body>
 <header>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
+    <div class="navbar navbar-light box-shadow" style="background-color: #b4b4b4;">
+        <div class="container d-flex justify-content-between"
+             style="margin-top:-10px;margin-bottom:-10px">
             <a
                     href="/index.html"
                     class="navbar-brand d-flex align-items-center no-drag">
-                <img width="50px" src="/resource/main.png">
-                <strong style="margin-left:10px">문화프레임빅데이터연구소</strong>
+                <img height="70px" src="/resource/main.gif">
             </a>
             <div style="height:100%;">
                 <form id="frameSubmit" action="/frame.php" method="get">
