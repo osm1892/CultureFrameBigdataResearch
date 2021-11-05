@@ -1,7 +1,7 @@
 var dataCount = 0;
 var superTable = {};
 
-function doit(data) {
+function loadData(data) {
     $('#spinner').remove();
 
     if (data.signal !== 1) {
@@ -104,7 +104,7 @@ function submit() {
     exinos = [];
     $('input').attr("disabled", true);
 
-    let datas = [];
+    let dataList = [];
     let terms = [];
 
     for (let i = 0; i < dataCount; i++) {
@@ -125,7 +125,7 @@ function submit() {
         myData.chinese = isEmptyOrSpaces(chinese) ? "null" : trimAll(chinese);
         myData.japanese = isEmptyOrSpaces(japanese) ? "null" : trimAll(japanese);
 
-        datas.push(myData)
+        dataList.push(myData)
 
         myData.english.split(',').forEach(e => {
             if (e !== "null") {
@@ -157,12 +157,12 @@ function submit() {
         })
     }
 
-    if (datas.length === 0) {
+    if (dataList.length === 0) {
         alert('추가된 용어가 없습니다.');
         window.location.href = "index.html";
     } else {
         let json = {
-            data: datas,
+            data: dataList,
             super: term
         };
         let postData = JSON.stringify(json);
@@ -221,7 +221,7 @@ function recursive(integer, terms, data) {
         let origin = "";
 
         exinos.forEach(e => {
-            if (e[1] == terms[integer]) {
+            if (e[1] === terms[integer]) {
                 origin = e[0];
             }
         });

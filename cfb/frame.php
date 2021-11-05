@@ -58,7 +58,7 @@ $_GET['word'] = ucfirst($_GET['word']);
                         return;
                     } else {
                         console.log(data);
-                        doit(data);
+                        loadData(data);
                     }
                     $('#prescript').remove();
                 });
