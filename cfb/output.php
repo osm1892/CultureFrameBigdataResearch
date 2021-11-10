@@ -38,7 +38,7 @@ if (empty($_GET['nationality'])) {
     }
 }
 
-$qr = "SELECT origin,nationality FROM _terms WHERE term='{$_GET['term']}'";
+$qr = "SELECT origin,nationality,super FROM _terms WHERE term='{$_GET['term']}'";
 $GLOBALS['exist'] = false;
 
 if (empty($_GET['index'])) {
@@ -58,6 +58,7 @@ while ($rst = mysqli_fetch_assoc($aaa)) {
         $GLOBALS["origin"] = $rst["origin"];
         $GLOBALS['exist'] = true;
         $GLOBALS['nationality'] = $rst["nationality"];
+        $GLOBALS['super'] = $rst["super"];
         //break;
     }
     $cntt++;
@@ -170,6 +171,17 @@ if ($GLOBALS['exist']) {
             $('#prescript').remove();
         });
     </script>
+    <script>
+        function fitFrame() {
+            let frame = document.getElementById('frame');
+            frame.style.width = $('#output-header').width() + 'px';
+            frame.style.height = frame.contentWindow.document.body.scrollHeight + 10 + 'px';
+        }
+
+        window.onresize = function () {
+            fitFrame();
+        }
+    </script>
 </head>
 
 <body>
@@ -227,7 +239,10 @@ if ($GLOBALS['exist']) {
         <div class="container">
             <div class="card bg-light mb-3">
                 <div class="card-body" style="padding:0px">
-                    <div class="card-header">
+                    <div id="output-header" class="card-header">
+                        <iframe id="frame" src="/frameNetData/showFrameDef.php?name=<?php print($GLOBALS["super"]); ?>"
+                                onload="fitFrame();">
+                        </iframe>
                         <p style="font-size:x-large">Vote Result Of "<?php print($_GET["term"]); ?>"</p>
                         <select
                                 class="form-control"
