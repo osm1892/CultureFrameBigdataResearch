@@ -42,7 +42,7 @@ if ($response == false || strpos($response, "not found") !== False) {
 // xml을 파싱합니다.
 $xslt = new xsltProcessor;
 $dom = new DOMDocument();
-$dom->load('frame.xsl');
+$dom->load('frame/frame.xsl');
 $xslt->importStyleSheet($dom);
 
 $dom->loadXML($response);

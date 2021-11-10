@@ -818,12 +818,6 @@
                      the definitions are done being colored -->
                 <div id='bodyDelay' style='display:none;'>
                     <iframe id='banner' style='display:none;'></iframe>
-                    <!-- display navigation link at top right, unless on desktop -->
-                    <xsl:if test="$internalMode!='desktop'">
-                        <div style="float:right;">
-                            <a href="../luIndex.xml" target='_parent'>Lexical Unit Index</a>
-                        </div>
-                    </xsl:if>
                     <!-- basic frame info: name, definition, semantic type -->
                     <h1>
                         <xsl:value-of select='@name'/>
