@@ -7,3 +7,4 @@
 cfb/data/photo
 *.sql
 config.ini
+**/.idea
