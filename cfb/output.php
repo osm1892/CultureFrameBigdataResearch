@@ -241,7 +241,8 @@ if ($GLOBALS['exist']) {
                 <div class="card-body" style="padding:0px">
                     <div id="output-header" class="card-header">
                         <iframe id="frame" src="/frameNetData/showFrameDef.php?name=<?php print($GLOBALS["super"]); ?>"
-                                onload="fitFrame();">
+                                onload="fitFrame();"
+                                style="border-width:2px; border-color:black; border-style:solid;">
                         </iframe>
                         <p style="font-size:x-large">Vote Result Of "<?php print($_GET["term"]); ?>"</p>
                         <select
