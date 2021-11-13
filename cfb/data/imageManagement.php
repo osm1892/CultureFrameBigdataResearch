@@ -191,14 +191,14 @@ foreach ($data as $my) {
             $query = sprintf('INSERT INTO _terms VALUES("%s", 0, "chinese", "%s", "0000-00-00 00:00:00", 0, "%s")',
                 $ch, $origin, $super);
             mysqli_query($dbConnect, $query);
-            array_push($jsonResult["rst"], $ch);
+            array_push($jsonResult["suc"], $ch);
         }
         foreach ($japanese_ex as $ja) {
             if ($ja == "null") break;
             $query = sprintf('INSERT INTO _terms VALUES("%s", 0, "japanese", "%s", "0000-00-00 00:00:00", 0, "%s")',
                 $ja, $origin, $super);
             mysqli_query($dbConnect, $query);
-            array_push($jsonResult["rst"], $ja);
+            array_push($jsonResult["suc"], $ja);
         }
 
     }
